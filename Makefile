@@ -3,6 +3,10 @@ SUBDIR	= srcs
 OBJDIR	= objs
 
 SRCS	=	${SUBDIR}/minishell.c\
+			${SUBDIR}/ms_tokenize.c\
+			${SUBDIR}/ms_path_parse.c\
+			${SUBDIR}/ms_error_codes.c\
+			${SUBDIR}/ms_tokenize_utils.c\
 
 OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})
 

@@ -1,33 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   ms_error_codes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/12 22:22:07 by fclivaz           #+#    #+#             */
-/*   Updated: 2022/10/25 15:01:48 by fclivaz          ###   ########.fr       */
+/*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
+/*   Updated: 2023/08/21 18:48:03 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+#include "../minishell.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	error_bad_format(char *src)
 {
-	char	*str1;
-	char	*str2;
+	ft_printf("\033[1;31mError:\033[0m ");
+	ft_printf("\033[1;33m%s\033[0m incorrect syntax.\n", src);
+	exit (2);
+}
 
-	if (dest == src)
-		return (dest);
-	str1 = (char *)src;
-	str2 = (char *)dest;
-	if (!dest && !src)
-		return (dest);
-	if (src < dest)
-		while (n--)
-			str2[n] = str1[n];
+void	error_system(int mode, char *file)
+{
+	if (mode == 2)
+		perror(file);
+	else if (mode == -1)
+	{
+		ft_putstr_fd(file, 2);
+		ft_putstr_fd(": command not found\n", 2);
+		exit(errno);
+	}
 	else
-		while (n--)
-			*str2++ = *str1++;
-	return (dest);
+		perror("\033[1;31mError\033[0m");
+	exit(mode);
 }
