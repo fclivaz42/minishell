@@ -33,7 +33,6 @@ void	error_system(int mode, char *file)
 	{
 		ft_putstr_fd(file, 2);
 		ft_putstr_fd(": command not found\n", 2);
-		exit(errno);
 	}
 	else
 		perror("\033[1;31mError\033[0m");

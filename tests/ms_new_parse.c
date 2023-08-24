@@ -34,6 +34,7 @@ static char	**unpack_path(char *env[])
 static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 {
 	int		x;
+	int		fd;
 	char	*fcmd;
 
 	x = -1;
@@ -43,15 +44,19 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 		check_failed_memory(fcmd);
 		ft_strlcpy(fcmd, p[x], ft_strlen(p[x]) + 1);
 		ft_strlcat(fcmd, cmd, ft_strlen(p[x]) + cmdlen + 2);
-		if (open(fcmd, O_RDONLY) != -1)
+		fd = open(fcmd, O_RDONLY);
+		if (fd != -1)
 		{
 			arrayfree(p);
+			close(fd);
+			free(cmd);
 			return (fcmd);
 		}
-		free(cmd);
 		free(fcmd);
 	}
 	error_system(-1, cmd + 1);
+	arrayfree(p);
+	free(cmd);
 	free(fcmd);
 	return (NULL);
 }
@@ -62,14 +67,12 @@ static char	*make_pathed(char *str, char *env[])
 	char	*cmd;
 
 	x = 0;
-	while (*str == ' ')
-		str++;
 	while (!(str[x] == 0 || str[x] == ' '))
 		++x;
 	cmd = (char *)ft_calloc(x + 2, sizeof(char));
 	check_failed_memory(cmd);
 	cmd[0] = '/';
-	ft_strlcat(cmd, str, x + 1);
+	ft_strlcat(cmd, str, x + 2);
 	return (find_real_cmd(cmd, ft_strlen(cmd), unpack_path(env)));
 }
 
@@ -100,8 +103,17 @@ static char	**concatenate(t_list *list)
 char	**ms_fullparse(char *str, char *env[])
 {
 	t_list	*list;
+	t_list	*append;
 
+	while (*str == ' ')
+		str++;
 	list = ft_lstnew(make_pathed(str, env));
+	while (!(*str == 0 || *str == ' '))
+		str++;
+	while (*str == ' ')
+		str++;
+	if (*str == 0)
+		return (concatenate(list));
 //	ft_lstadd_back(&list, separator(str));
 	return (concatenate(list));
 }
