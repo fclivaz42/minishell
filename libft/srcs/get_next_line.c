@@ -80,7 +80,7 @@ static char	*gnl_copy(int fd, char *raw)
 		if (bytes < 0)
 		{
 			free(raw);
-			free (buf);
+			free(buf);
 			return (NULL);
 		}
 		buf[bytes] = 0;

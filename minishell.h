@@ -29,12 +29,20 @@
 
 // --- ENV PARSING --- //
 
+char	**ms_fullparse(char *str, char *env[]);
+
 // --- PIPING UTILS --- //
+
+// --- EXTRAS --- //
+
+void	zerofree(char *s);
+void	arrayfree(char **arr);
 
 // --- ERROR HANDLING --- //
 
-void	error_system(int mode, char *file);
 void	error_bad_format(char *src);
+void	check_failed_memory(void *str);
+void	error_system(int mode, char *file);
 
 // --- DEBUG SWITCH --- //
 

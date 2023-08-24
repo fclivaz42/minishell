@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:15:00 by fclivaz           #+#    #+#             */
-/*   Updated: 2022/10/17 16:23:41 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/05/02 17:03:56 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,11 @@
 
 void	ft_bzero(void *s, size_t len)
 {
-	unsigned long int	x;
-	char				*str;
+	size_t	x;
+	char	*str;
 
-	x = 0;
-	str = s;
-	while (x != len)
-	{
+	x = -1;
+	str = (char *)s;
+	while (++x != len)
 		str[x] = 0;
-		++x;
-	}
 }
