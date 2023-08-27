@@ -21,6 +21,8 @@
 # include <unistd.h>
 # include <dirent.h>
 # include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "libft/libft.h"
 
 // --- STRUCTS --- //
@@ -29,7 +31,7 @@
 
 // --- ENV PARSING --- //
 
-char	**ms_fullparse(char *str, char *env[]);
+char	**ms_fullparse(char *str);
 
 // --- PIPING UTILS --- //
 
@@ -44,10 +46,16 @@ void	error_bad_format(char *src);
 void	check_failed_memory(void *str);
 void	error_system(int mode, char *file);
 
-// --- DEBUG SWITCH --- //
+// --- DEBUG SWITCHES --- //
 
 # ifndef DEBUG
 #  define DEBUG 0
 # endif
+# define HOSTNAME "HOSTNAME"
+# ifdef WSL2
+#  undef HOSTNAME
+#  define HOSTNAME "NAME"
+# endif
+
 
 #endif

@@ -12,19 +12,16 @@
 
 #include "../minishell.h"
 
-static char	**unpack_path(char *env[])
+static char	**unpack_path(void)
 {
 	int		id;
 	char	*path;
 	char	**pathvars;
 
 	id = -1;
-	while (env[++id] != NULL)
-		if (!ft_strncmp(env[id], "PATH=", 5))
-			path = ft_strchr(env[id], '/');
+	path = getenv("PATH");
 	pathvars = ft_split(path, ':');
 	check_failed_memory(pathvars);
-	id = -1;
 	while (pathvars[++id] != NULL)
 		if (pathvars[id][ft_strlen(pathvars[id])] == '/')
 			pathvars[id][ft_strlen(pathvars[id])] = 0;
@@ -43,7 +40,7 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 		fcmd = (char *)ft_calloc(cmdlen + ft_strlen(p[x]) + 1, sizeof(char));
 		check_failed_memory(fcmd);
 		ft_strlcpy(fcmd, p[x], ft_strlen(p[x]) + 1);
-		ft_strlcat(fcmd, cmd, ft_strlen(p[x]) + cmdlen + 2);
+		ft_strlcat(fcmd, cmd, ft_strlen(fcmd) + cmdlen + 2);
 		fd = open(fcmd, O_RDONLY);
 		if (fd != -1)
 		{
@@ -61,7 +58,7 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 	return (NULL);
 }
 
-static char	*make_pathed(char *str, char *env[])
+static char	*make_pathed(char *str)
 {
 	int		x;
 	char	*cmd;
@@ -73,7 +70,7 @@ static char	*make_pathed(char *str, char *env[])
 	check_failed_memory(cmd);
 	cmd[0] = '/';
 	ft_strlcat(cmd, str, x + 2);
-	return (find_real_cmd(cmd, ft_strlen(cmd), unpack_path(env)));
+	return (find_real_cmd(cmd, ft_strlen(cmd), unpack_path()));
 }
 
 static char	**concatenate(t_list *list)
@@ -100,14 +97,14 @@ static char	**concatenate(t_list *list)
 	return (commands);
 }
 
-char	**ms_fullparse(char *str, char *env[])
+char	**ms_fullparse(char *str)
 {
 	t_list	*list;
 	t_list	*append;
 
 	while (*str == ' ')
 		str++;
-	list = ft_lstnew(make_pathed(str, env));
+	list = ft_lstnew(make_pathed(str));
 	while (!(*str == 0 || *str == ' '))
 		str++;
 	while (*str == ' ')
