@@ -29,9 +29,14 @@
 
 // --- MINISHELL --- //
 
+char	*readline_proompter(char *env[]);
+void	execute(char **commands, char *env[]);
+
 // --- ENV PARSING --- //
 
 char	**ms_fullparse(char *str);
+t_list	*append_argument(t_list *list, char *str);
+void	do_the_rest(t_list *list, char *str);
 
 // --- PIPING UTILS --- //
 

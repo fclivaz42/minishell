@@ -46,22 +46,22 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 		{
 			arrayfree(p);
 			close(fd);
-			free(cmd);
 			return (fcmd);
 		}
-		free(fcmd);
+		zerofree(fcmd);
 	}
 	error_system(-1, cmd + 1);
 	arrayfree(p);
-	free(cmd);
-	free(fcmd);
+	zerofree(fcmd);
 	return (NULL);
 }
 
 static char	*make_pathed(char *str)
 {
 	int		x;
+	int		y;
 	char	*cmd;
+	char	*fcmd;
 
 	x = 0;
 	while (!(str[x] == 0 || str[x] == ' '))
@@ -69,8 +69,14 @@ static char	*make_pathed(char *str)
 	cmd = (char *)ft_calloc(x + 2, sizeof(char));
 	check_failed_memory(cmd);
 	cmd[0] = '/';
-	ft_strlcat(cmd, str, x + 2);
-	return (find_real_cmd(cmd, ft_strlen(cmd), unpack_path()));
+	x = 0;
+	y = 0;
+	while (!(str[x] == 0 || str[x] == ' '))
+		if (!(str[x] == 34 || str[x] == 39))
+			cmd[++y] = str[x++];
+	fcmd = find_real_cmd(cmd, ft_strlen(cmd), unpack_path());
+	zerofree(cmd);
+	return (fcmd);
 }
 
 static char	**concatenate(t_list *list)
@@ -100,7 +106,6 @@ static char	**concatenate(t_list *list)
 char	**ms_fullparse(char *str)
 {
 	t_list	*list;
-	t_list	*append;
 
 	while (*str == ' ')
 		str++;
@@ -111,6 +116,6 @@ char	**ms_fullparse(char *str)
 		str++;
 	if (*str == 0)
 		return (concatenate(list));
-//	ft_lstadd_back(&list, separator(str));
+	do_the_rest(list, str);
 	return (concatenate(list));
 }
