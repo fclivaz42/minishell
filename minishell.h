@@ -61,6 +61,4 @@ void	error_system(int mode, char *file);
 #  undef HOSTNAME
 #  define HOSTNAME "NAME"
 # endif
-
-
 #endif

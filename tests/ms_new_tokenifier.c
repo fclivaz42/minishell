@@ -38,7 +38,7 @@ t_list	*append_argument(t_list *list, char *str)
 void	do_the_rest(t_list *list, char *str)
 {
 	char	c;
-	
+
 	while (*str != 0)
 	{
 		ft_lstadd_back(&list, append_argument(list, str));
@@ -47,7 +47,7 @@ void	do_the_rest(t_list *list, char *str)
 		{
 			++str;
 			while (!(*str == 34 || *str == 39))
-				ft_putchar_fd(*str++, 1);
+				str++;
 			++str;
 		}
 		else

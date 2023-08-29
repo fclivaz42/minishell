@@ -28,8 +28,9 @@ int	main(int ac, char *av[], char *env[])
 	prompt = readline_proompter(env);
 	rl = readline(prompt);
 	commands = ms_fullparse(rl);
-	while (commands[++x] != NULL)
-		printf("command %d is: %s\n", x, commands[x]);
+	execute(commands, env);
+//	while (commands[++x] != NULL)
+//		printf("command %d is: %s\n", x, commands[x]);
 	arrayfree(commands);
 	zerofree(prompt);
 	zerofree(rl);
