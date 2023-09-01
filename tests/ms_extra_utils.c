@@ -28,7 +28,32 @@ void	arrayfree(char **arr)
 	free(arr);
 }
 
-void	execute(char **commands, char *env[])
+char	**list_to_char(t_list *env)
+{
+	char	**ret;
+	char	**tmp;
+	char	*var;
+	int		x;
+
+	x = -1;
+	ret = (char **)ft_calloc(ft_lstsize(env) + 1, sizeof(char *));
+	check_failed_memory(ret);
+	while (env != NULL)
+	{
+		tmp = (char **)env->content;
+		var = (char *)ft_calloc(ft_strlen(tmp[0]) + \
+			ft_strlen(tmp[1]) + 2, sizeof(char));
+		check_failed_memory(var);
+		quicc_copy(var, tmp[0]);
+		quicc_copy(var, "=");
+		quicc_copy(var, tmp[1]);
+		ret[++x] = var;
+		env = env->next;
+	}
+	return (ret);
+}
+
+void	execute(char **commands, t_list	*env)
 {
 	int	pid;
 
@@ -36,6 +61,6 @@ void	execute(char **commands, char *env[])
 	if (pid < 0)
 		error_system(errno, "syscall");
 	if (pid == 0)
-		if (execve(commands[0], commands, env) == -1)
+		if (execve(commands[0], commands, list_to_char(env)) == -1)
 			error_system(errno, "syscall");
 }

@@ -89,6 +89,7 @@ static char	**concatenate(t_list *list)
 	args = list;
 	x = ft_lstsize(list);
 	commands = (char **)ft_calloc(x + 1, sizeof(char *));
+	check_failed_memory(commands);
 	x = 0;
 	while (args != NULL)
 	{
@@ -108,12 +109,13 @@ char	**ms_fullparse(char *str)
 	t_list	*list;
 
 	while (*str == ' ')
-		str++;
+		++str;
 	list = ft_lstnew(make_pathed(str));
+	check_failed_memory(list);
 	while (!(*str == 0 || *str == ' '))
-		str++;
+		++str;
 	while (*str == ' ')
-		str++;
+		++str;
 	if (*str == 0)
 		return (concatenate(list));
 	do_the_rest(list, str);

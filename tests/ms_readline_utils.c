@@ -19,7 +19,7 @@ static char	*squigglify(char *pwd)
 
 	home = getenv("HOME");
 	if (ft_strncmp(pwd, home, ft_strlen(home)))
-		return (pwd);
+		return (ft_strdup(pwd));
 	pwd = pwd + ft_strlen(home);
 	squiggled = (char *)ft_calloc(ft_strlen(pwd) + 2, sizeof(char));
 	ft_strlcpy(squiggled, "~", 2);
@@ -27,7 +27,7 @@ static char	*squigglify(char *pwd)
 	return (squiggled);
 }
 
-static void	quicc_copy(char *dest, char *src)
+void	quicc_copy(char *dest, char *src)
 {
 	int	x;
 	int	y;
@@ -49,7 +49,7 @@ char	*readline_proompter(char *env[])
 
 	username = getenv("USER");
 	if (__APPLE__)
-		hostname = "iMac";
+		hostname = "macOS";
 	else
 		hostname = getenv(HOSTNAME);
 	workdir = squigglify(getenv("PWD"));

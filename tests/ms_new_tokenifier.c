@@ -31,6 +31,7 @@ t_list	*append_argument(t_list *list, char *str)
 		while (!(str[len] == ' ' || str[len] == 0))
 			++len;
 	argument = (char *)ft_calloc(len + 1, sizeof(char));
+	check_failed_memory(argument);
 	ft_strlcpy(argument, str, len + 1);
 	return (ft_lstnew(argument));
 }
