@@ -29,7 +29,7 @@ int	main(int ac, char *av[], char *env[])
 	printf("\nWelcome to minishell alpha v0.25!\n\n");
 	prompt = readline_proompter(msdata.env);
 	rl = readline(prompt);
-	commands = ms_fullparse(rl);
+	commands = ms_fullparse(rl, msdata.env);
 	execute(commands, msdata.env);
 //	while (commands[++x] != NULL)
 //		printf("command %d is: %s\n", x, commands[x]);

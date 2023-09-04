@@ -12,14 +12,14 @@
 
 #include "../minishell.h"
 
-static char	**unpack_path(void)
+static char	**unpack_path(t_list *env)
 {
 	int		id;
 	char	*path;
 	char	**pathvars;
 
 	id = -1;
-	path = getenv("PATH");
+	path = find_env(env, "PATH");
 	pathvars = ft_split(path, ':');
 	check_failed_memory(pathvars);
 	while (pathvars[++id] != NULL)
@@ -56,7 +56,7 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 	return (NULL);
 }
 
-static char	*make_pathed(char *str)
+static char	*make_pathed(char *str, t_list *env)
 {
 	int		x;
 	int		y;
@@ -74,7 +74,7 @@ static char	*make_pathed(char *str)
 	while (!(str[x] == 0 || str[x] == ' '))
 		if (!(str[x] == 34 || str[x] == 39))
 			cmd[++y] = str[x++];
-	fcmd = find_real_cmd(cmd, ft_strlen(cmd), unpack_path());
+	fcmd = find_real_cmd(cmd, ft_strlen(cmd), unpack_path(env));
 	zerofree(cmd);
 	return (fcmd);
 }
@@ -104,13 +104,13 @@ static char	**concatenate(t_list *list)
 	return (commands);
 }
 
-char	**ms_fullparse(char *str)
+char	**ms_fullparse(char *str, t_list *env)
 {
 	t_list	*list;
 
 	while (*str == ' ')
 		++str;
-	list = ft_lstnew(make_pathed(str));
+	list = ft_lstnew(make_pathed(str, env));
 	check_failed_memory(list);
 	while (!(*str == 0 || *str == ' '))
 		++str;

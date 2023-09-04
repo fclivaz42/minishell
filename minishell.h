@@ -40,7 +40,7 @@ void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //
 
-char	**ms_fullparse(char *str);
+char	**ms_fullparse(char *str, t_list *env);
 t_list	*append_argument(t_list *list, char *str);
 t_list	*copy_env(char *env[]);
 char	*find_env(t_list *env, char *str);
