@@ -35,20 +35,19 @@ typedef struct t_minishell
 
 // --- MINISHELL --- //
 
-char	*readline_proompter(char *env[]);
+char	*readline_proompter(t_list *env);
 void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //
 
 char	**ms_fullparse(char *str);
 t_list	*append_argument(t_list *list, char *str);
-t_list	*find_env(t_list *env, char *str);
 t_list	*copy_env(char *env[]);
+char	*find_env(t_list *env, char *str);
 void	delete_env(t_list *env, char *str);
-void	replace_env(t_list *env, char *str);
 void	do_the_rest(t_list *list, char *str);
-
-
+void	new_env_var(t_list *env, char *newvar, char *value);
+void	replace_env(t_list *env, char *var_to_change, char *str);
 
 // --- PIPING UTILS --- //
 

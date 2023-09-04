@@ -12,12 +12,12 @@
 
 #include "../minishell.h"
 
-static char	*squigglify(char *pwd)
+static char	*squigglify(t_list *env, char *pwd)
 {
 	char	*home;
 	char	*squiggled;
 
-	home = getenv("HOME");
+	home = find_env(env, "HOME");
 	if (ft_strncmp(pwd, home, ft_strlen(home)))
 		return (ft_strdup(pwd));
 	pwd = pwd + ft_strlen(home);
@@ -27,42 +27,33 @@ static char	*squigglify(char *pwd)
 	return (squiggled);
 }
 
-void	quicc_copy(char *dest, char *src)
+void	build_prompt(char *prompt, char **vars)
 {
-	int	x;
-	int	y;
-
-	x = 0;
-	y = -1;
-	while (dest[x] != 0)
-		++x;
-	while (src[++y] != 0)
-		dest[x + y] = src[y];
+	quicc_copy(prompt, "[");
+	quicc_copy(prompt, vars[0]);
+	quicc_copy(prompt, "@");
+	quicc_copy(prompt, vars[1]);
+	quicc_copy(prompt, "]: ");
+	quicc_copy(prompt, vars[2]);
+	quicc_copy(prompt, ">$ ");
+	zerofree(vars[2]);
 }
 
-char	*readline_proompter(char *env[])
+char	*readline_proompter(t_list *env)
 {
-	char	*username;
-	char	*hostname;
-	char	*workdir;
+	t_list	*env_cpy;
+	char	*vars[3];
 	char	*prompt;
 
-	username = getenv("USER");
+	vars[0] = find_env(env, "USER");
 	if (__APPLE__)
-		hostname = "macOS";
+		vars[1] = "macOS";
 	else
-		hostname = getenv(HOSTNAME);
-	workdir = squigglify(getenv("PWD"));
-	prompt = (char *)ft_calloc(ft_strlen(username) + \
-		ft_strlen(hostname) + ft_strlen(workdir) + \
+		vars[1] = find_env(env, HOSTNAME);
+	vars[2] = squigglify(env, find_env(env, "PWD"));
+	prompt = (char *)ft_calloc(ft_strlen(vars[0]) + \
+		ft_strlen(vars[1]) + ft_strlen(vars[2]) + \
 		ft_strlen("[@]:  >$ ") + 1, sizeof(char));
-	quicc_copy(prompt, "[");
-	quicc_copy(prompt, username);
-	quicc_copy(prompt, "@");
-	quicc_copy(prompt, hostname);
-	quicc_copy(prompt, "]: ");
-	quicc_copy(prompt, workdir);
-	quicc_copy(prompt, ">$ ");
-	zerofree(workdir);
+	build_prompt(prompt, vars);
 	return (prompt);
 }

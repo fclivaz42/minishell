@@ -12,31 +12,50 @@
 
 #include "../minishell.h"
 
-t_list	*find_env(t_list *env, char *str)
+void	new_env_var(t_list *env, char *newvar, char *value)
+{
+	t_list	*addition;
+	char	**fullenv;
+
+	fullenv = (char **)ft_calloc(3, sizeof(char **));
+	fullenv[0] = ft_strdup(newvar);
+	fullenv[1] = ft_strdup(value);
+	ft_lstadd_back(&env, ft_lstnew(fullenv));
+}
+
+char	*find_env(t_list *env, char *str)
 {
 	t_list	*list;
 	char	**test;
 
 	list = env;
 	test = (char **)list->content;
-	while(ft_strncmp(str, test[0], ft_strlen(test[0])))
+	while (ft_strncmp(str, test[0], ft_strlen(test[0])))
 	{
 		list = list->next;
 		if (list == NULL)
 			return (NULL);
 		test = (char **)list->content;
 	}
-	return (list);
+	return (test[1]);
 }
 
-
-void	replace_env(t_list *env, char *str)
+void	replace_env(t_list *env, char *var_to_change, char *new_var)
 {
+	t_list	*list;
 	char	**var;
 
-	var = (char **)env->content;
+	list = env;
+	var = (char **)list->content;
+	while (ft_strncmp(var_to_change, var[0], ft_strlen(var[0])))
+	{
+		list = list->next;
+		if (list == NULL)
+			return ;
+		var = (char **)list->content;
+	}
 	zerofree(var[1]);
-	var[1] = ft_strdup(str);
+	var[1] = ft_strdup(new_var);
 	check_failed_memory(var[1]);
 }
 
@@ -45,10 +64,10 @@ void	delete_env(t_list *env, char *str)
 	t_list	*delete;
 	t_list	*prev;
 	char	**test;
-	
+
 	delete = env;
 	test = (char **)delete->content;
-	while(ft_strncmp(str, test[0], ft_strlen(test[0])))
+	while (ft_strncmp(str, test[0], ft_strlen(test[0])))
 	{
 		prev = delete;
 		delete = delete->next;
@@ -59,30 +78,4 @@ void	delete_env(t_list *env, char *str)
 	prev->next = delete->next;
 	arrayfree((char **)delete->content);
 	free(delete);
-}
-
-t_list	*copy_env(char *env[])
-{
-	int		x;
-	int		len;
-	char	**var;
-	t_list	*newenv;
-
-	x = -1;
-	while (env[++x] != NULL)
-	{
-		var = (char **)ft_calloc(3, sizeof(char *));
-		check_failed_memory(var);
-		len = ft_strlen(env[x]) - ft_strlen(ft_strchr(env[x], '='));
-		var[0] = (char *)ft_calloc(len + 1, sizeof(char));
-		check_failed_memory(var[0]);
-		ft_strlcpy(var[0], env[x], len + 1);
-		var[1] = ft_strdup(ft_strchr(env[x], '=') + 1);
-		check_failed_memory(var[1]);
-		if (x == 0)
-			newenv = ft_lstnew(var);
-		if (x > 0)
-			ft_lstadd_back(&newenv, ft_lstnew(var));
-	}
-	return (newenv);
 }
