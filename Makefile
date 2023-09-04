@@ -16,7 +16,7 @@ CFLAGS	= -Wall -Werror -Wextra -O2
 
 LFLAGS = -Llibft -lft
 
-CC = gcc
+CC = cc
 
 ${NAME}:	${OBJ}
 			make -C libft all

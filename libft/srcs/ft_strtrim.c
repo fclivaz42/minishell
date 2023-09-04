@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 18:31:10 by fclivaz           #+#    #+#             */
-/*   Updated: 2022/10/28 17:39:00 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/04 16:09:03 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	end = findend(s1, set);
 	if (end - start < 0)
 		return (ft_calloc(1, 1));
-	ret = (char *)malloc(end - start + 2);
+	ret = (char *)ft_calloc(end - start + 2, sizeof(char));
 	if (ret == NULL)
 		return (NULL);
 	while (s1[(++i) + start] != 0 && i != end - start + 1)

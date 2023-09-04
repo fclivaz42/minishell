@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 17:06:23 by fclivaz           #+#    #+#             */
-/*   Updated: 2022/10/27 14:48:23 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/04 16:17:49 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char	*ft_itoa(int n)
 
 	k = n;
 	i = nbrlen(k);
-	str = (char *)malloc(i + 1);
+	str = (char *)ft_calloc(i + 1, sizeof(char));
 	if (str == NULL)
 		return (NULL);
 	str[i] = 0;

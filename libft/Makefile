@@ -57,7 +57,7 @@ NAME	= libft.a
 
 CFLAGS	= -Wall -Werror -Wextra -O2
 
-CC = gcc
+CC = cc
 
 ${NAME}:	${OBJ}
 			ar rc ${NAME} ${OBJ}
