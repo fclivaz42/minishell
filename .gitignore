@@ -55,4 +55,4 @@ dkms.conf
 objs/
 .vscode/
 minishell
-.swp
+*.swp
