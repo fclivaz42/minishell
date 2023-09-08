@@ -6,19 +6,19 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/08/24 16:44:49 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:37:58 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+#include <sys/_types/_pid_t.h>
 
 int	main(int ac, char *av[], char *env[])
 {
-	int			x = -1;
+	int		x = -1;
 	char		**commands;
 	char		*prompt;
 	char		*rl;
-	int			pid;
 	t_minishell	msdata;	
 
 //	pid = fork();
@@ -35,6 +35,5 @@ int	main(int ac, char *av[], char *env[])
 //		printf("command %d is: %s\n", x, commands[x]);
 	arrayfree(commands);
 	zerofree(prompt);
-	zerofree(rl);
 	return (0);
 }

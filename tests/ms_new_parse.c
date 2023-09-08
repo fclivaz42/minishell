@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/08/24 16:40:33 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/07 18:54:44 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,14 @@ static char	**concatenate(t_list *list)
 	return (commands);
 }
 
-char	**ms_fullparse(char *str, t_list *env)
+char	**ms_fullparse(char *raw, t_list *env)
 {
 	t_list	*list;
+	char	*str;
 
+//	str = raw;
+	str = interpreter(raw, env);
+	zerofree(raw);
 	while (*str == ' ')
 		++str;
 	list = ft_lstnew(make_pathed(str, env));
