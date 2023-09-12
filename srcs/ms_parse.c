@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_new_parse.c                                     :+:      :+:    :+:   */
+/*   ms_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/07 18:54:44 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/12 17:12:32 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ char	**ms_fullparse(char *raw, t_list *env)
 	t_list	*list;
 	char	*str;
 
-//	str = raw;
+	if (ft_strlen(raw) == 0)
+		return (NULL);
 	str = interpreter(raw, env);
 	zerofree(raw);
 	while (*str == ' ')
@@ -123,5 +124,6 @@ char	**ms_fullparse(char *raw, t_list *env)
 	if (*str == 0)
 		return (concatenate(list));
 	do_the_rest(list, str);
+	free(str);
 	return (concatenate(list));
 }

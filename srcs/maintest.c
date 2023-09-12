@@ -6,12 +6,15 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/07 17:37:58 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/12 15:43:44 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <sys/_types/_pid_t.h>
+
+void	freexit()
+{
+}
 
 int	main(int ac, char *av[], char *env[])
 {
@@ -27,13 +30,19 @@ int	main(int ac, char *av[], char *env[])
 //	waitpid(pid, NULL, 0);
 	msdata.env = copy_env(env);
 	printf("\nWelcome to minishell alpha v0.25!\n\n");
-	prompt = readline_proompter(msdata.env);
-	rl = readline(prompt);
-	commands = ms_fullparse(rl, msdata.env);
-	execute(commands, msdata.env);
-//	while (commands[++x] != NULL)
-//		printf("command %d is: %s\n", x, commands[x]);
-	arrayfree(commands);
-	zerofree(prompt);
+	while (1 == 1)
+	{
+		prompt = readline_proompter(msdata.env);
+		rl = readline(prompt);
+		commands = ms_fullparse(rl, msdata.env);
+		msdata.pid = fork();
+		if (msdata.pid == 0)
+			execute(commands, msdata.env);
+//		while (commands[++x] != NULL)
+//			printf("command %d is: %s\n", x, commands[x]);
+		arrayfree(commands);
+		zerofree(prompt);
+		waitpid(msdata.pid, NULL, 0);
+	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/07 18:00:20 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/12 16:58:23 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ void	new_env_var(t_list *env, char *newvar, char *value)
 	t_list	*addition;
 	char	**fullenv;
 
-	fullenv = (char
-		**)ft_calloc(3, sizeof(char **));
+	fullenv = (char **)ft_calloc(3, sizeof(char **));
 	fullenv[0] = ft_strdup(newvar);
 	fullenv[1] = ft_strdup(value);
 	ft_lstadd_back(&env, ft_lstnew(fullenv));
@@ -33,7 +32,7 @@ char	*find_env(t_list *env, char *str)
 	len = 0;
 	list = env;
 	test = (char **)list->content;
-	while (!(str[len] == 0 || str[len] == ' ')) 
+	while (!(str[len] == 0 || str[len] == ' '))
 		len++;
 	while (ft_strncmp(str, test[0], len))
 	{

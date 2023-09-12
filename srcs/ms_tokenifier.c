@@ -1,20 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_new_tokenifier.c                                :+:      :+:    :+:   */
+/*   ms_tokenifier.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/08 20:10:28 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/12 17:12:03 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	find_size(char *raw, t_list *env)
+static int	find_var_size(t_list *env, char *raw)
 {
-	int	size;
+	int		size;
+	char	*var;
+
+	size = 0;
+	while (!(*raw == ' ' || *raw == 0 || *raw == 34))
+	{
+		++size;
+		++raw;
+	}
+	var = (char *)ft_calloc(size + 1, sizeof(char));
+	ft_strlcpy(var, raw - size, size + 1);
+	size = ft_strlen(find_env(env, var));
+	zerofree(var);
+	return (size);
+}
+
+static int	find_size(char *raw, t_list *env)
+{
+	int		size;
 
 	size = 0;
 	while (*raw != 0)
@@ -22,42 +40,47 @@ int	find_size(char *raw, t_list *env)
 		if (*raw == 39)
 		{
 			++raw;
-			while (*raw++ != 39)
+			while (*raw != 39)
+			{
 				++size;
+				++raw;
+			}
 		}
 		if (*raw == '$')
 		{
-			size = size + ft_strlen(find_env(env, ++raw)); 
-			printf("Found in RAW: %s\n", raw);
-			while(!(*raw == ' ' || *raw == 0 || *raw == 34))
+			++raw;
+			size = size + find_var_size(env, raw);
+			while (!(*raw == ' ' || *raw == 0 || *raw == 34))
 				++raw;
 		}
 	++raw;
 	++size;
 	}
-	ft_printf("found LEN %d\n", size);
+	ft_printf("size is %d\n", size);
 	return (size);
 }
 
 char	*interpreter(char *raw, t_list *env)
 {
 	int		i;
-	char	*procs;
+	char	*ntrp;
 
 	i = 0;
-	procs = (char *)ft_calloc(find_size(raw, env) + 1, sizeof(char));
-	ft_putendl_fd(raw, 1);
+	ntrp = (char *)ft_calloc(find_size(raw, env) + 1, sizeof(char));
 	while (*raw != 0)
 	{
 		if (*raw == 39)
 		{
-			printf("balls");
+			++raw;
+			while (*raw != 39)
+				ntrp[i++] = *raw++;
+			++raw;
 		}
-	procs[i++] = raw[0];
+	ntrp[i++] = raw[0];
 	++raw;
 	}
-	printf("returning %s\n", procs);
-	return (procs);
+	printf("returning %s\n", ntrp);
+	return (ntrp);
 }
 
 t_list	*append_argument(t_list *list, char *str)

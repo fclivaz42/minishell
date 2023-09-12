@@ -2,11 +2,14 @@ SUBDIR	= srcs
 
 OBJDIR	= objs
 
-SRCS	=	${SUBDIR}/minishell.c\
-			${SUBDIR}/ms_tokenize.c\
-			${SUBDIR}/ms_path_parse.c\
-			${SUBDIR}/ms_error_codes.c\
-			${SUBDIR}/ms_tokenize_utils.c\
+SRCS	=	${SUBDIR}/maintest.c\
+		${SUBDIR}/ms_parse.c\
+		${SUBDIR}/ms_env_init.c\
+		${SUBDIR}/ms_env_utils.c\
+		${SUBDIR}/ms_tokenifier.c\
+		${SUBDIR}/ms_error_codes.c\
+		${SUBDIR}/ms_extra_utils.c\
+		${SUBDIR}/ms_readline_utils.c\
 
 OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})
 
@@ -14,7 +17,7 @@ NAME	= minishell
 
 CFLAGS	= -Wall -Werror -Wextra -O2
 
-LFLAGS = -Llibft -lft
+LFLAGS = -Llibft -lft -lreadline
 
 CC = cc
 
@@ -42,6 +45,7 @@ fclean:	clean
 		rm -f ${NAME}
 		rm -f libft/libft.a
 
-re:		fclean all
+re:		fclean
+		${MAKE} all
 
 .PHONY: all fclean clean re

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hex_converter.c                                    :+:      :+:    :+:   */
+/*   ft_printf_toolhex.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 21:37:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2022/11/24 21:03:45 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:14:59 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,7 @@ int	print_hex(char str, unsigned int i)
 	ret = 0;
 	if (i == 0)
 		return (write(1, "0", 1));
-	if (i < 0)
-	{
-		i = i + UINT_MAX + 1;
-		pr_hex(i, str);
-	}
-	else
-		pr_hex(i, str);
+	pr_hex(i, str);
 	while (i != 0)
 	{
 		++ret;

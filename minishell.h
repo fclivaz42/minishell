@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/08/21 18:27:29 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/07 17:44:42 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,9 @@
 # include <unistd.h>
 # include <dirent.h>
 # include <signal.h>
-# include <readline/readline.h>
 # include <readline/history.h>
+# include <readline/readline.h>
+# include <sys/_types/_pid_t.h>
 # include "libft/libft.h"
 
 // --- STRUCTS --- //
@@ -31,16 +32,18 @@ typedef struct t_minishell
 {
 	t_list  *env;
 	t_list  *commands;
+	pid_t	pid;
 }	t_minishell;
 
 // --- MINISHELL --- //
 
+char	**ms_fullparse(char *str, t_list *env);
 char	*readline_proompter(t_list *env);
+char	*interpreter(char *raw, t_list *env);
 void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //
 
-char	**ms_fullparse(char *str, t_list *env);
 t_list	*append_argument(t_list *list, char *str);
 t_list	*copy_env(char *env[]);
 char	*find_env(t_list *env, char *str);
