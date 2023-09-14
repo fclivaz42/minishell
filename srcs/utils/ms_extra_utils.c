@@ -6,11 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:21:02 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/08/29 15:21:10 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/14 16:33:19 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	zerofree(char *s)
 {

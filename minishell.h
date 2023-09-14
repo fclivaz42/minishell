@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/07 17:44:42 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/14 16:40:19 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <signal.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <sys/_types/_pid_t.h>
+# include <sys/wait.h>
 # include "libft/libft.h"
 
 // --- STRUCTS --- //
@@ -44,7 +44,7 @@ void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //
 
-t_list	*append_argument(t_list *list, char *str);
+t_list	*append_argument(char *str);
 t_list	*copy_env(char *env[]);
 char	*find_env(t_list *env, char *str);
 void	delete_env(t_list *env, char *str);

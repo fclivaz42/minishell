@@ -6,11 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/12 17:12:32 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/14 18:30:15 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static char	**unpack_path(t_list *env)
 {
@@ -20,6 +20,8 @@ static char	**unpack_path(t_list *env)
 
 	id = -1;
 	path = find_env(env, "PATH");
+	if (path == NULL)
+		return (NULL);
 	pathvars = ft_split(path, ':');
 	check_failed_memory(pathvars);
 	while (pathvars[++id] != NULL)
@@ -51,8 +53,11 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 		zerofree(fcmd);
 	}
 	error_system(-1, cmd + 1);
-	arrayfree(p);
-	zerofree(fcmd);
+	if (x > 0)
+	{
+		arrayfree(p);
+		zerofree(fcmd);
+	}
 	return (NULL);
 }
 
@@ -100,7 +105,8 @@ static char	**concatenate(t_list *list)
 		args = args->next;
 		++x;
 	}
-	free(lstfree);
+	if (x > 0)
+		free(lstfree);
 	return (commands);
 }
 
@@ -111,7 +117,6 @@ char	**ms_fullparse(char *raw, t_list *env)
 
 	if (ft_strlen(raw) == 0)
 		return (NULL);
-	str = interpreter(raw, env);
 	zerofree(raw);
 	while (*str == ' ')
 		++str;

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/12 15:43:44 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/14 16:38:37 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void	freexit()
 
 int	main(int ac, char *av[], char *env[])
 {
-	int		x = -1;
 	char		**commands;
 	char		*prompt;
 	char		*rl;
 	t_minishell	msdata;	
 
+	(void)ac;
+	(void)av;
 //	pid = fork();
 //	if (pid == 0)
 //		clear_term(env);

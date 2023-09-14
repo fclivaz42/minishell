@@ -6,15 +6,14 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/12 16:58:23 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/14 16:42:42 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	new_env_var(t_list *env, char *newvar, char *value)
 {
-	t_list	*addition;
 	char	**fullenv;
 
 	fullenv = (char **)ft_calloc(3, sizeof(char **));
@@ -70,6 +69,7 @@ void	delete_env(t_list *env, char *str)
 	char	**test;
 
 	delete = env;
+	prev = env;
 	test = (char **)delete->content;
 	while (ft_strncmp(str, test[0], ft_strlen(test[0])))
 	{

@@ -3,13 +3,13 @@ SUBDIR	= srcs
 OBJDIR	= objs
 
 SRCS	=	${SUBDIR}/maintest.c\
-		${SUBDIR}/ms_parse.c\
-		${SUBDIR}/ms_env_init.c\
-		${SUBDIR}/ms_env_utils.c\
-		${SUBDIR}/ms_tokenifier.c\
-		${SUBDIR}/ms_error_codes.c\
-		${SUBDIR}/ms_extra_utils.c\
-		${SUBDIR}/ms_readline_utils.c\
+		${SUBDIR}/parsing/ms_parse.c\
+		${SUBDIR}/parsing/ms_env_init.c\
+		${SUBDIR}/parsing/ms_env_utils.c\
+		${SUBDIR}/parsing/ms_tokenifier.c\
+		${SUBDIR}/utils/ms_error_codes.c\
+		${SUBDIR}/utils/ms_extra_utils.c\
+		${SUBDIR}/utils/ms_readline_utils.c\
 
 OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})
 
@@ -30,6 +30,8 @@ ${OBJDIR}/%.o:	${SUBDIR}/%.c | ${OBJDIR}
 
 ${OBJDIR}:
 		mkdir -p $@
+		mkdir -p ${OBJDIR}/parsing
+		mkdir -p ${OBJDIR}/utils
 
 all:	${NAME}
 

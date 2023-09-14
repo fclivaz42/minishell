@@ -6,11 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:27:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/08/29 15:27:36 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/14 16:36:44 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static char	*squigglify(t_list *env, char *pwd)
 {
@@ -41,7 +41,6 @@ void	build_prompt(char *prompt, char **vars)
 
 char	*readline_proompter(t_list *env)
 {
-	t_list	*env_cpy;
 	char	*vars[3];
 	char	*prompt;
 

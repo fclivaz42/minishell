@@ -6,11 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/12 17:12:03 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/14 16:40:44 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static int	find_var_size(t_list *env, char *raw)
 {
@@ -83,9 +83,8 @@ char	*interpreter(char *raw, t_list *env)
 	return (ntrp);
 }
 
-t_list	*append_argument(t_list *list, char *str)
+t_list	*append_argument(char *str)
 {
-	t_list	*append;
 	char	*argument;
 	char	c;
 	int		len;
@@ -113,7 +112,7 @@ void	do_the_rest(t_list *list, char *str)
 
 	while (*str != 0)
 	{
-		ft_lstadd_back(&list, append_argument(list, str));
+		ft_lstadd_back(&list, append_argument(str));
 		c = str[0];
 		if (c == 34 || c == 39)
 		{

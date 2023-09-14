@@ -6,11 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/04 19:31:40 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/14 17:50:01 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 static void	fixup_env(t_list *env)
 {
@@ -33,7 +33,7 @@ static void	fixup_env(t_list *env)
 		++ms_path;
 		++x;
 	}
-	replace_env(env, "SHELL", shell);
+//	replace_env(env, "SHELL", shell);
 	free(shell);
 	delete_env(env, "_");
 }

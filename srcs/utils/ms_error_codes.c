@@ -6,11 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/08/21 18:48:03 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/14 16:33:28 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../../minishell.h"
 
 void	check_failed_memory(void *str)
 {
