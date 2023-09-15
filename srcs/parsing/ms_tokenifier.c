@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 16:40:44 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/14 19:26:18 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,14 @@ static int	find_size(char *raw, t_list *env)
 	return (size);
 }
 
-char	*interpreter(char *raw, t_list *env)
+char	*interpreter(char *raw, t_list *env, char mode)
 {
 	int		i;
 	char	*ntrp;
 
 	i = 0;
 	ntrp = (char *)ft_calloc(find_size(raw, env) + 1, sizeof(char));
+	check_failed_memory(ntrp);
 	while (*raw != 0)
 	{
 		if (*raw == 39)

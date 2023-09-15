@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 16:40:19 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/14 19:26:32 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct t_minishell
 {
 	t_list  *env;
 	t_list  *commands;
+	char	*pwd;
 	pid_t	pid;
 }	t_minishell;
 
@@ -39,7 +40,7 @@ typedef struct t_minishell
 
 char	**ms_fullparse(char *str, t_list *env);
 char	*readline_proompter(t_list *env);
-char	*interpreter(char *raw, t_list *env);
+char	*interpreter(char *raw, t_list *env, char mode);
 void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //
