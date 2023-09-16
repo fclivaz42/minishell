@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 19:26:32 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/15 20:18:58 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,15 @@ typedef struct t_minishell
 	char	*pwd;
 	pid_t	pid;
 }	t_minishell;
+
+
+typedef struct t_token
+{
+	t_list		*cmd;
+	int		fd_in;
+	int		fd_out;
+	struct t_token	*next;
+}	t_token;
 
 // --- MINISHELL --- //
 

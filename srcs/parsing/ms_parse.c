@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 18:30:15 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/15 20:29:14 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,21 +64,20 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 static char	*make_pathed(char *str, t_list *env)
 {
 	int		x;
-	int		y;
+	char	*ntrp;
 	char	*cmd;
 	char	*fcmd;
 
 	x = 0;
-	while (!(str[x] == 0 || str[x] == ' '))
+	while (!(ft_strchr(" \t\n\0", str[x])))
 		++x;
 	cmd = (char *)ft_calloc(x + 2, sizeof(char));
 	check_failed_memory(cmd);
 	cmd[0] = '/';
 	x = 0;
-	y = 0;
-	while (!(str[x] == 0 || str[x] == ' '))
-		if (!(str[x] == 34 || str[x] == 39))
-			cmd[++y] = str[x++];
+	while (!(ft_strchr(" \t\n\0", str[x])))
+		++x;
+	interpreter((str + x), env, str[x]);
 	fcmd = find_real_cmd(cmd, ft_strlen(cmd), unpack_path(env));
 	zerofree(cmd);
 	return (fcmd);
@@ -110,15 +109,13 @@ static char	**concatenate(t_list *list)
 	return (commands);
 }
 
-char	**ms_fullparse(char *raw, t_list *env)
+char	**ms_fullparse(char *str, t_list *env)
 {
 	t_list	*list;
-	char	*str;
 
-	if (ft_strlen(raw) == 0)
+	if (ft_strlen(str) == 0)
 		return (NULL);
-	zerofree(raw);
-	while (*str == ' ')
+	while (ft_strchr(" \t\n\0", *str))
 		++str;
 	list = ft_lstnew(make_pathed(str, env));
 	check_failed_memory(list);
@@ -129,6 +126,5 @@ char	**ms_fullparse(char *raw, t_list *env)
 	if (*str == 0)
 		return (concatenate(list));
 	do_the_rest(list, str);
-	free(str);
 	return (concatenate(list));
 }
