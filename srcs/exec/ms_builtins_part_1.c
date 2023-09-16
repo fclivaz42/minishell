@@ -6,8 +6,8 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 18:15:45 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/16 18:41:19 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h
+#include "../../minishell.h"

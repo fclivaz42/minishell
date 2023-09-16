@@ -6,99 +6,74 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 17:54:36 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/16 20:22:46 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static char	**unpack_path(t_list *env)
+static t_list	*append_argument(char *str)
 {
-	int		id;
-	char	*path;
-	char	**pathvars;
+	char	*argument;
+	char	c;
+	int		len;
 
-	id = -1;
-	path = find_env(env, "PATH");
-	if (path == NULL)
-		return (NULL);
-	pathvars = ft_split(path, ':');
-	check_failed_memory(pathvars);
-	while (pathvars[++id] != NULL)
-		if (pathvars[id][ft_strlen(pathvars[id])] == '/')
-			pathvars[id][ft_strlen(pathvars[id])] = 0;
-	return (pathvars);
+	c = str[0];
+	len = 0;
+	if (c == 34 || c == 39)
+	{
+		++str;
+		while (!(str[len] == 34 || str[len] == 39 || str[len] == 0))
+			++len;
+	}
+	else
+		while (!(str[len] == ' ' || str[len] == 0))
+			++len;
+	argument = (char *)ft_calloc(len + 1, sizeof(char));
+	check_failed_memory(argument);
+	ft_strlcpy(argument, str, len + 1);
+	return (ft_lstnew(argument));
 }
 
-static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
+char	*make_token(char *str)
 {
 	int		x;
-	int		fd;
-	char	*fcmd;
+	int		y;
+	char	*token;
 
 	x = -1;
-	while (p[++x] != NULL)
+	while (!(ft_strchr(" \t\n\0", str[++x])))
 	{
-		fcmd = (char *)ft_calloc(cmdlen + ft_strlen(p[x]) + 1, sizeof(char));
-		check_failed_memory(fcmd);
-		ft_strlcpy(fcmd, p[x], ft_strlen(p[x]) + 1);
-		ft_strlcat(fcmd, cmd, ft_strlen(fcmd) + cmdlen + 2);
-		fd = open(fcmd, O_RDONLY);
-		if (fd != -1)
-		{
-			arrayfree(p);
-			close(fd);
-			return (fcmd);
-		}
-		zerofree(fcmd);
+		if (ft_strchr("{}[]()\\;%~`?!#", str[x]))
+			return(error_unsupported_character(str[x]));
 	}
-	error_system(-1, cmd + 1);
-	if (x > 0)
-	{
-		arrayfree(p);
-		zerofree(fcmd);
-	}
-	return (NULL);
-}
-
-static char	*make_pathed(char *str, t_list *env)
-{
-	int		x;
-	char	*ntrp;
-	char	*cmd;
-	char	*fcmd;
-
-	x = 0;
-	while (!(ft_strchr(" \t\n\0", str[x])))
-		++x;
-	cmd = (char *)ft_calloc(x + 2, sizeof(char));
-	check_failed_memory(cmd);
-	cmd[0] = '/';
-	x = 0;
-	while (!(ft_strchr(" \t\n\0", str[x])))
-		++x;
-	interpreter((str + x), env, str[x]);
-	fcmd = find_real_cmd(cmd, ft_strlen(cmd), unpack_path(env));
-	zerofree(cmd);
-	return (fcmd);
 }
 
 t_list	*ms_fullparse(char *str, t_list *env)
 {
 	t_list	*list;
+	t_list	*next;
 
 	if (ft_strlen(str) == 0)
 		return (NULL);
 	while (ft_strchr(" \t\n\0", *str))
 		++str;
-	list = ft_lstnew(make_pathed(str, env));
+	if (*str != 0)
+		return (NULL);
+	list = ft_lstnew(make_token(str));
 	check_failed_memory(list);
-	while (!(*str == 0 || *str == ' '))
-		++str;
-	while (*str == ' ')
-		++str;
-	if (*str == 0)
-		return (list);
-	do_the_rest(list, str);
+	str = str + ft_strlen(list->content);
+	while (*str != 0)
+	{
+		while (ft_strchr(" \t\n\0", *str))
+			++str;
+		if (*str != 0)
+		{
+			next = ft_lstnew(make_token(str));
+			check_failed_memory(next);
+			ft_lstadd_back(&list, next);
+			str = str + ft_strlen(next->content);
+		}
+	}
 	return (list);
 }

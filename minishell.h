@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 18:01:47 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/16 20:03:27 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 // --- STRUCTS --- //
 
-typedef struct t_minishell
+typedef struct s_minishell
 {
 	t_list  *env;
 	t_list  *commands;
@@ -36,14 +36,13 @@ typedef struct t_minishell
 	pid_t	pid;
 }	t_minishell;
 
-
-typedef struct t_token
+typedef struct s_token
 {
 	t_list		*word;
 	int		fd_in;
 	int		fd_out;
-	struct t_token	*next;
-	struct t_token	*prev;
+	struct s_token	*next;
+	struct s_token	*prev;
 }	t_token;
 
 // --- MINISHELL --- //
@@ -56,11 +55,9 @@ void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //
 
-t_list	*append_argument(char *str);
 t_list	*copy_env(char *env[]);
 char	*find_env(t_list *env, char *str);
 void	delete_env(t_list *env, char *str);
-void	do_the_rest(t_list *list, char *str);
 void	new_env_var(t_list *env, char *newvar, char *value);
 void	replace_env(t_list *env, char *var_to_change, char *str);
 
@@ -75,9 +72,10 @@ char	**list_to_char(t_list *env);
 
 // --- BUNGIE SPECIFIC --- //
 
-void	error_bad_format(char *src);
+void	*error_bad_format(char *src);
 void	check_failed_memory(void *str);
 void	error_system(int mode, char *file);
+void	*error_unsupported_character(char c);
 
 // --- DEBUG SWITCHES --- //
 

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 16:33:28 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/16 20:03:43 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	check_failed_memory(void *str)
 		error_system(errno, "MEMFAIL");
 }
 
-void	error_bad_format(char *src)
+void	*error_bad_format(char *src)
 {
 	ft_printf("\033[1;31mError:\033[0m ");
 	ft_printf("\033[1;33m%s\033[0m incorrect syntax.\n", src);
-	exit (2);
+	return (NULL);
 }
 
 void	error_system(int mode, char *file)
@@ -37,4 +37,12 @@ void	error_system(int mode, char *file)
 	else
 		perror("\033[1;31mError\033[0m");
 	exit(mode);
+}
+
+void	*error_unsupported_character(char c) 
+{
+	
+	ft_printf("\033[1;31mError:\033[0m ");
+	ft_printf("\033[1;33m%c\033[0m unsupported character.\n", c);
+	return (NULL);
 }

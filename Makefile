@@ -3,10 +3,15 @@ SUBDIR	= srcs
 OBJDIR	= objs
 
 SRCS	=	${SUBDIR}/maintest.c\
+		${SUBDIR}/exec/ms_exec.c\
+		${SUBDIR}/exec/ms_builtins_part1.c\
+		${SUBDIR}/exec/ms_builtins_part2.c\
+		${SUBDIR}/exec/ms_builtins_utils.c\
 		${SUBDIR}/parsing/ms_parse.c\
 		${SUBDIR}/parsing/ms_env_init.c\
 		${SUBDIR}/parsing/ms_env_utils.c\
-		${SUBDIR}/parsing/ms_tokenifier.c\
+		${SUBDIR}/parsing/ms_interpreter.c\
+		${SUBDIR}/tokenizer/ms_pathed_command.c\
 		${SUBDIR}/utils/ms_error_codes.c\
 		${SUBDIR}/utils/ms_extra_utils.c\
 		${SUBDIR}/utils/ms_readline_utils.c\
