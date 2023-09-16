@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 16:38:37 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/16 17:55:38 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	freexit()
 
 int	main(int ac, char *av[], char *env[])
 {
-	char		**commands;
 	char		*prompt;
 	char		*rl;
 	t_minishell	msdata;	
@@ -35,13 +34,12 @@ int	main(int ac, char *av[], char *env[])
 	{
 		prompt = readline_proompter(msdata.env);
 		rl = readline(prompt);
-		commands = ms_fullparse(rl, msdata.env);
+		msdata.commands = ms_fullparse(rl, msdata.env);
 		msdata.pid = fork();
 		if (msdata.pid == 0)
-			execute(commands, msdata.env);
+			execute(msdata.commands, msdata.env);
 //		while (commands[++x] != NULL)
 //			printf("command %d is: %s\n", x, commands[x]);
-		arrayfree(commands);
 		zerofree(prompt);
 		waitpid(msdata.pid, NULL, 0);
 	}

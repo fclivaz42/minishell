@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/15 20:18:58 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/16 18:01:47 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,19 @@ typedef struct t_minishell
 
 typedef struct t_token
 {
-	t_list		*cmd;
+	t_list		*word;
 	int		fd_in;
 	int		fd_out;
 	struct t_token	*next;
+	struct t_token	*prev;
 }	t_token;
 
 // --- MINISHELL --- //
 
-char	**ms_fullparse(char *str, t_list *env);
+t_list	*ms_fullparse(char *str, t_list *env);
 char	*readline_proompter(t_list *env);
 char	*interpreter(char *raw, t_list *env, char mode);
+char	**concatenate(t_list *list);
 void	execute(char **commands, t_list	*env);
 
 // --- ENVIRONMENT UTILS --- //

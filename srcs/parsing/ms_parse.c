@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/15 20:29:14 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/16 17:54:36 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,33 +83,7 @@ static char	*make_pathed(char *str, t_list *env)
 	return (fcmd);
 }
 
-static char	**concatenate(t_list *list)
-{
-	int		x;
-	char	**commands;
-	t_list	*args;
-	t_list	*lstfree;
-
-	args = list;
-	x = ft_lstsize(list);
-	commands = (char **)ft_calloc(x + 1, sizeof(char *));
-	check_failed_memory(commands);
-	x = 0;
-	while (args != NULL)
-	{
-		if (x > 0)
-			free(lstfree);
-		commands[x] = (char *)args->content;
-		lstfree = args;
-		args = args->next;
-		++x;
-	}
-	if (x > 0)
-		free(lstfree);
-	return (commands);
-}
-
-char	**ms_fullparse(char *str, t_list *env)
+t_list	*ms_fullparse(char *str, t_list *env)
 {
 	t_list	*list;
 
@@ -124,7 +98,7 @@ char	**ms_fullparse(char *str, t_list *env)
 	while (*str == ' ')
 		++str;
 	if (*str == 0)
-		return (concatenate(list));
+		return (list);
 	do_the_rest(list, str);
-	return (concatenate(list));
+	return (list);
 }

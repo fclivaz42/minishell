@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:21:02 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 16:33:19 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/16 18:01:12 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,32 @@ void	quicc_copy(char *dest, char *src)
 		dest[x + y] = src[y];
 }
 
+char	**concatenate(t_list *list)
+{
+	int		x;
+	char	**commands;
+	t_list	*args;
+	t_list	*lstfree;
+
+	args = list;
+	x = ft_lstsize(list);
+	commands = (char **)ft_calloc(x + 1, sizeof(char *));
+	check_failed_memory(commands);
+	x = 0;
+	while (args != NULL)
+	{
+		if (x > 0)
+			free(lstfree);
+		commands[x] = (char *)args->content;
+		lstfree = args;
+		args = args->next;
+		++x;
+	}
+	if (x > 0)
+		free(lstfree);
+	return (commands);
+}
+
 char	**list_to_char(t_list *env)
 {
 	char	**ret;
@@ -64,16 +90,4 @@ char	**list_to_char(t_list *env)
 		env = env->next;
 	}
 	return (ret);
-}
-
-void	execute(char **commands, t_list	*env)
-{
-	int	pid;
-
-	pid = fork();
-	if (pid < 0)
-		error_system(errno, "syscall");
-	if (pid == 0)
-		if (execve(commands[0], commands, list_to_char(env)) == -1)
-			error_system(errno, "syscall");
 }
