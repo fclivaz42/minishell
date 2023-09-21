@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 20:03:27 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/21 21:18:51 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,22 @@
 
 // --- STRUCTS --- //
 
-typedef struct s_minishell
-{
-	t_list  *env;
-	t_list  *commands;
-	char	*pwd;
-	pid_t	pid;
-}	t_minishell;
-
 typedef struct s_token
 {
-	t_list		*word;
+	t_list		*words;
 	int		fd_in;
 	int		fd_out;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
+
+typedef struct s_minishell
+{
+	t_list  *env;
+	t_token	*commands;
+	char	*pwd;
+	pid_t	pid;
+}	t_minishell;
 
 // --- MINISHELL --- //
 
@@ -51,7 +51,7 @@ t_list	*ms_fullparse(char *str, t_list *env);
 char	*readline_proompter(t_list *env);
 char	*interpreter(char *raw, t_list *env, char mode);
 char	**concatenate(t_list *list);
-void	execute(char **commands, t_list	*env);
+int	execute(t_token *tkn, t_minishell *msdata);
 
 // --- ENVIRONMENT UTILS --- //
 
@@ -65,10 +65,19 @@ void	replace_env(t_list *env, char *var_to_change, char *str);
 
 // --- EXTRAS --- //
 
+void	freexit(t_minishell *msdata);
 void	zerofree(char *s);
 void	arrayfree(char **arr);
 void	quicc_copy(char *dest, char *src);
 char	**list_to_char(t_list *env);
+
+// --- BUILT-IN COMMANDS --- //
+
+int	echo(t_token *tkn);
+int	cd(t_token *tkn, t_list *env);
+int	env(t_token *tkn, t_minishell *msdata);
+int	mexport(t_token *tkn, t_minishell *msdata);
+int	unset(t_token *tkn, t_minishell *msdata);
 
 // --- BUNGIE SPECIFIC --- //
 

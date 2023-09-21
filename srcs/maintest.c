@@ -6,13 +6,13 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 17:55:38 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/21 21:19:07 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	freexit()
+void	freexit(t_minishell *msdata)
 {
 }
 
