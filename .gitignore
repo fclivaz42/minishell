@@ -56,3 +56,4 @@ objs/
 .vscode/
 minishell
 *.swp
+Session.vim
