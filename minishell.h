@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/21 21:18:51 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/26 19:58:23 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,16 @@
 
 typedef struct s_token
 {
-	t_list		*words;
-	int		fd_in;
-	int		fd_out;
+	t_list			*words;
+	int				fd_in;
+	int				fd_out;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_minishell
 {
-	t_list  *env;
+	t_list	*env;
 	t_token	*commands;
 	char	*pwd;
 	pid_t	pid;
@@ -51,7 +51,7 @@ t_list	*ms_fullparse(char *str, t_list *env);
 char	*readline_proompter(t_list *env);
 char	*interpreter(char *raw, t_list *env, char mode);
 char	**concatenate(t_list *list);
-int	execute(t_token *tkn, t_minishell *msdata);
+int		execute(t_token *tkn, t_minishell *msdata);
 
 // --- ENVIRONMENT UTILS --- //
 
@@ -73,11 +73,11 @@ char	**list_to_char(t_list *env);
 
 // --- BUILT-IN COMMANDS --- //
 
-int	echo(t_token *tkn);
-int	cd(t_token *tkn, t_list *env);
-int	env(t_token *tkn, t_minishell *msdata);
-int	mexport(t_token *tkn, t_minishell *msdata);
-int	unset(t_token *tkn, t_minishell *msdata);
+int		echo(t_token *tkn);
+int		cd(t_token *tkn, t_minishell *msdata);
+int		env(t_token *tkn, t_minishell *msdata);
+int		mexport(t_token *tkn, t_minishell *msdata);
+int		unset(t_token *tkn, t_minishell *msdata);
 
 // --- BUNGIE SPECIFIC --- //
 

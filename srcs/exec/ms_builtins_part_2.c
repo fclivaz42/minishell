@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:17:11 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/21 21:35:50 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/26 17:14:50 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	mexport(t_token *tkn, t_minishell *msdata)
 {
 	char	*var;
 	char	*str;
+	int		size;
 	int		x;	
 
 	str = ft_strchr(tkn->words->next->content, '=');
@@ -44,6 +45,14 @@ int	mexport(t_token *tkn, t_minishell *msdata)
 		return (1);
 	x = -1;
 	str++;
-
+	size = (char *)str - (char *)tkn->words->next->content;
+	var = (char *)ft_calloc(size, sizeof(char));
+	check_failed_memory(var);
+	ft_strlcpy(var, tkn->words->next->content, size);
+	if (find_env(msdata->env, var) != NULL)
+		replace_env(msdata->env, var, str);
+	else
+		new_env_var(msdata->env, var, str);
+	zerofree(var);
 	return (0);
 }

@@ -1,13 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_builtins_utils.c                                :+:      :+:    :+:   */
+/*   strdiff.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/16 18:16:04 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 18:16:15 by fclivaz          ###   ########.fr       */
+/*   Created: 2023/09/26 16:44:52 by fclivaz           #+#    #+#             */
+/*   Updated: 2023/09/26 16:52:47 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+	char *str1 = "Hello this is Jack!";
+	char *str2 = strchr(str1, 'J');
+
+	printf("%s\n", str1);
+	printf("%s\n", str2);
+	printf("%ld\n", (char *)str2 - (char *)str1);
+}

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 16:42:42 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/26 17:14:13 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,11 @@ void	new_env_var(t_list *env, char *newvar, char *value)
 	char	**fullenv;
 
 	fullenv = (char **)ft_calloc(3, sizeof(char **));
+	check_failed_memory(fullenv);
 	fullenv[0] = ft_strdup(newvar);
+	check_failed_memory(fullenv[0]);
 	fullenv[1] = ft_strdup(value);
+	check_failed_memory(fullenv[1]);
 	ft_lstadd_back(&env, ft_lstnew(fullenv));
 }
 
