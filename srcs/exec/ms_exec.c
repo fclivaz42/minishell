@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 17:58:17 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/26 19:47:03 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/28 21:36:29 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ int	execute(t_token *tkn, t_minishell *msdata)
 		return (echo(tkn));
 	else if (!(ft_strncmp("cd", cmd, 2)))
 		return (cd(tkn, msdata));
-	else if (!(ft_strncmp("pwd", cmd, 3)))
-		return (!(write(tkn->fd_out, msdata->pwd, ft_strlen(msdata->pwd))));
 	else if (!(ft_strncmp("export", cmd, 6)))
 		return (mexport(tkn, msdata));
 	else if (!(ft_strncmp("unset", cmd, 5)))
 		return (unset(tkn, msdata));
 	else if (!(ft_strncmp("env", cmd, 3)))
-		return(env(tkn, msdata));
+		return (env(tkn, msdata));
+	else if (!(ft_strncmp("pwd", cmd, 3)))
+		ft_putendl_fd(msdata->pwd, tkn->fd_out);
 	else if (!(ft_strncmp("exit", cmd, 4)))
 	{
 		ft_putendl_fd("exit", 1);

@@ -12,7 +12,7 @@
 
 #include "../pipex.h"
 
-void	check_failed_memory(void *str)
+void	memchk(void *str)
 {
 	if (str == NULL)
 		error_system(errno, "MEMFAIL");

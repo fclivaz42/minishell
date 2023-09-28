@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 17:50:01 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/28 22:49:29 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,29 @@
 
 static void	fixup_env(t_list *env)
 {
-	char	*ms_path;
+	char	**split;
 	char	*shell;
 	int		x;
 
+	x = -1;
 	if (find_env(env, "SHLVL") != NULL)
 		replace_env(env, "SHLVL", ft_itoa(ft_atoi(find_env(env, "SHLVL")) + 1));
 	else
 		new_env_var(env, "SHLVL", "1");
-	ms_path = find_env(env, "_");
-	shell = (char *)ft_calloc(ft_strlen(ms_path), 1);
-	x = 0;
-	while (*ms_path != 0)
+	shell = (char *)memchk(ft_calloc(ft_strlen(getenv("_")), sizeof(char)));
+	split = memchk(ft_split(getenv("_"), '/'));
+	while (split[++x] != 0)
 	{
-		if (ms_path[0] == '/' && ms_path[1] == '.' && ms_path[2] == '/')
-			ms_path = ms_path + 2;
-		shell[x] = ms_path[0];
-		++ms_path;
-		++x;
+		if (ft_strncmp(split[x], ".", 1))
+		{
+			quicc_copy(shell, "/");
+			quicc_copy(shell, split[x]);
+		}
 	}
-//	replace_env(env, "SHELL", shell);
+	arrayfree(split);
+	if (find_env(env, "SHELL"))
+		delete_env(env, "SHELL");
+	new_env_var(env, "SHELL", shell);
 	free(shell);
 	delete_env(env, "_");
 }
@@ -48,19 +51,19 @@ t_list	*copy_env(char *env[])
 	x = -1;
 	while (env[++x] != NULL)
 	{
-		var = (char **)ft_calloc(3, sizeof(char *));
-		check_failed_memory(var);
+		var = (char **)memchk(ft_calloc(3, sizeof(char *)));
 		len = ft_strlen(env[x]) - ft_strlen(ft_strchr(env[x], '='));
-		var[0] = (char *)ft_calloc(len + 1, sizeof(char));
-		check_failed_memory(var[0]);
+		var[0] = (char *)memchk(ft_calloc(len + 1, sizeof(char)));
 		ft_strlcpy(var[0], env[x], len + 1);
-		var[1] = ft_strdup(ft_strchr(env[x], '=') + 1);
-		check_failed_memory(var[1]);
+		var[1] = memchk(ft_strdup(ft_strchr(env[x], '=') + 1));
 		if (x == 0)
 			newenv = ft_lstnew(var);
 		if (x > 0)
-			ft_lstadd_back(&newenv, ft_lstnew(var));
+			ft_lstadd_back(&newenv, memchk(ft_lstnew(var)));
 	}
-	fixup_env(newenv);
+	if (env != NULL)
+		fixup_env(newenv);
+	if (__APPLE__ && !find_env(newenv, "HOSTNAME"))
+		new_env_var(newenv, "HOSTNAME", "macOS");
 	return (newenv);
 }

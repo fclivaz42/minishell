@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:10:12 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 18:10:19 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/28 22:51:06 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ static char	**unpack_path(t_list *env)
 	path = find_env(env, "PATH");
 	if (path == NULL)
 		return (NULL);
-	pathvars = ft_split(path, ':');
-	check_failed_memory(pathvars);
+	pathvars = memchk(ft_split(path, ':'));
 	while (pathvars[++id] != NULL)
 		if (pathvars[id][ft_strlen(pathvars[id])] == '/')
 			pathvars[id][ft_strlen(pathvars[id])] = 0;
@@ -39,8 +38,8 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 	x = -1;
 	while (p[++x] != NULL)
 	{
-		fcmd = (char *)ft_calloc(cmdlen + ft_strlen(p[x]) + 1, sizeof(char));
-		check_failed_memory(fcmd);
+		fcmd = (char *)memchk(ft_calloc(cmdlen + \
+			ft_strlen(p[x]) + 1, sizeof(char)));
 		ft_strlcpy(fcmd, p[x], ft_strlen(p[x]) + 1);
 		ft_strlcat(fcmd, cmd, ft_strlen(fcmd) + cmdlen + 2);
 		fd = open(fcmd, O_RDONLY);
@@ -71,8 +70,7 @@ static char	*make_pathed(char *str, t_list *env)
 	x = 0;
 	while (!(ft_strchr(" \t\n\0", str[x])))
 		++x;
-	cmd = (char *)ft_calloc(x + 2, sizeof(char));
-	check_failed_memory(cmd);
+	cmd = (char *)memchk(ft_calloc(x + 2, sizeof(char)));
 	cmd[0] = '/';
 	x = 0;
 	while (!(ft_strchr(" \t\n\0", str[x])))

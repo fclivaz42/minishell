@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/26 19:58:23 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/28 20:15:46 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,25 @@
 
 typedef struct s_token
 {
-	t_list			*words;
 	int				fd_in;
 	int				fd_out;
+	t_list			*words;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
 typedef struct s_minishell
 {
+	pid_t	pid;
+	char	*pwd;
 	t_list	*env;
 	t_token	*commands;
-	char	*pwd;
-	pid_t	pid;
 }	t_minishell;
 
 // --- MINISHELL --- //
 
 t_list	*ms_fullparse(char *str, t_list *env);
-char	*readline_proompter(t_list *env);
+char	*readline_proompter(t_list *env, char *pwd);
 char	*interpreter(char *raw, t_list *env, char mode);
 char	**concatenate(t_list *list);
 int		execute(t_token *tkn, t_minishell *msdata);
@@ -82,8 +82,8 @@ int		unset(t_token *tkn, t_minishell *msdata);
 // --- BUNGIE SPECIFIC --- //
 
 void	*error_bad_format(char *src);
-void	check_failed_memory(void *str);
-void	error_system(int mode, char *file);
+void	*memchk(void *str);
+void	*error_system(int mode, char *file);
 void	*error_unsupported_character(char c);
 
 // --- DEBUG SWITCHES --- //

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_builtins_part_1.c                               :+:      :+:    :+:   */
+/*   ms_builtins_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/26 20:11:05 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/28 22:45:03 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	echo(t_token *tkn)
 	t_list	*print;
 
 	print = tkn->words->next;
-	if (ft_strncmp(print->content, "-n", 2))
+	if (!ft_strncmp(print->content, "-n", 2))
 		print = print->next;
 	while (print != NULL)
 	{
@@ -26,21 +26,23 @@ int	echo(t_token *tkn)
 		if (print != NULL)
 			write(tkn->fd_out, " ", 1);
 	}
-	if (ft_strncmp(tkn->words->content, "-n", 2))
+	if (ft_strncmp(tkn->words->next->content, "-n", 2))
 		write(tkn->fd_out, "\n", 1);
 	return (0);
 }
 
-static char	*relative_dir(char *path, char *pwd)
+static char	*relative_dir(char **path, char **pwd)
 {
 	char	*new_dir;
 	int		x;
 	int		y;
-	// --- USE SPLIT AND CHAR ** FOR INDEXATION
-	x = 0;
-	if (path[0] != '.')
-		new_dir
-	return (new_dir);
+
+	x = -1;
+	while (path[++x] != NULL)
+	{
+	//osef
+	}
+	return (memchk(new_dir));
 }
 
 int	cd(t_token *tkn, t_minishell *msdata)
@@ -50,19 +52,18 @@ int	cd(t_token *tkn, t_minishell *msdata)
 	char	*new_dir;
 
 	path = tkn->words->next->content;
-	if (path[0] != '/')
-		new_dir = relative_dir(path, msdata->pwd);
+	if (path[0] == '/')
+		new_dir = memchk(ft_strdup(path));
 	else
-		new_dir = ft_strdup(path);
-	check_failed_memory(new_dir);
+		new_dir = relative_dir(memchk(ft_split(path, '/')), \
+			memchk(ft_split(msdata->pwd, '/')));
 	fd = open(new_dir, O_RDONLY);
 	if (fd <= 0)
-		error_system(2 , new_dir);
+		error_system(2, new_dir);
 	else
 	{
 		zerofree(msdata->pwd);
-		msdata->pwd = ft_strdup(new_dir);
-		check_failed_memory(msdata->pwd); 
+		msdata->pwd = memchk(ft_strdup(new_dir));
 		if (find_env(msdata->env, "PWD") != NULL)
 			replace_env(msdata->env, "PWD", new_dir);
 		else

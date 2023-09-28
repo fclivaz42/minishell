@@ -85,7 +85,7 @@ char	**tokenize(char *src)
 	y = -1;
 	x = token_amount(src);
 	tokens = (char **)ft_calloc(x + 1, sizeof(char **));
-	check_failed_memory(tokens);
+	memchk(tokens);
 	while (++y != x)
 		tokens[y] = token_char(src, y);
 	return (tokens);

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 20:22:46 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/28 22:48:43 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,9 @@ static t_list	*append_argument(char *str)
 	else
 		while (!(str[len] == ' ' || str[len] == 0))
 			++len;
-	argument = (char *)ft_calloc(len + 1, sizeof(char));
-	check_failed_memory(argument);
+	argument = (char *)memchk(ft_calloc(len + 1, sizeof(char)));
 	ft_strlcpy(argument, str, len + 1);
-	return (ft_lstnew(argument));
+	return (memchk(ft_lstnew(argument)));
 }
 
 char	*make_token(char *str)
@@ -60,8 +59,7 @@ t_list	*ms_fullparse(char *str, t_list *env)
 		++str;
 	if (*str != 0)
 		return (NULL);
-	list = ft_lstnew(make_token(str));
-	check_failed_memory(list);
+	list = memchk(ft_lstnew(make_token(str)));
 	str = str + ft_strlen(list->content);
 	while (*str != 0)
 	{
@@ -69,8 +67,7 @@ t_list	*ms_fullparse(char *str, t_list *env)
 			++str;
 		if (*str != 0)
 		{
-			next = ft_lstnew(make_token(str));
-			check_failed_memory(next);
+			next = memchk(ft_lstnew(make_token(str)));
 			ft_lstadd_back(&list, next);
 			str = str + ft_strlen(next->content);
 		}

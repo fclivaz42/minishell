@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/14 19:26:18 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/28 22:47:15 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	find_var_size(t_list *env, char *raw)
 		++size;
 		++raw;
 	}
-	var = (char *)ft_calloc(size + 1, sizeof(char));
+	var = (char *)memchk(ft_calloc(size + 1, sizeof(char)));
 	ft_strlcpy(var, raw - size, size + 1);
 	size = ft_strlen(find_env(env, var));
 	zerofree(var);
@@ -66,8 +66,7 @@ char	*interpreter(char *raw, t_list *env, char mode)
 	char	*ntrp;
 
 	i = 0;
-	ntrp = (char *)ft_calloc(find_size(raw, env) + 1, sizeof(char));
-	check_failed_memory(ntrp);
+	ntrp = (char *)memchk(ft_calloc(find_size(raw, env) + 1, sizeof(char)));
 	while (*raw != 0)
 	{
 		if (*raw == 39)

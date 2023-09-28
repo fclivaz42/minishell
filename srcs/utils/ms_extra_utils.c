@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:21:02 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/16 18:01:12 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/28 22:52:02 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ char	**concatenate(t_list *list)
 
 	args = list;
 	x = ft_lstsize(list);
-	commands = (char **)ft_calloc(x + 1, sizeof(char *));
-	check_failed_memory(commands);
+	commands = (char **)memchk(ft_calloc(x + 1, sizeof(char *)));
 	x = 0;
 	while (args != NULL)
 	{
@@ -75,14 +74,12 @@ char	**list_to_char(t_list *env)
 	int		x;
 
 	x = -1;
-	ret = (char **)ft_calloc(ft_lstsize(env) + 1, sizeof(char *));
-	check_failed_memory(ret);
+	ret = (char **)memchk(ft_calloc(ft_lstsize(env) + 1, sizeof(char *)));
 	while (env != NULL)
 	{
 		tmp = (char **)env->content;
-		var = (char *)ft_calloc(ft_strlen(tmp[0]) + \
-			ft_strlen(tmp[1]) + 2, sizeof(char));
-		check_failed_memory(var);
+		var = (char *)memchk(ft_calloc(ft_strlen(tmp[0]) + \
+			ft_strlen(tmp[1]) + 2, sizeof(char)));
 		quicc_copy(var, tmp[0]);
 		quicc_copy(var, "=");
 		quicc_copy(var, tmp[1]);

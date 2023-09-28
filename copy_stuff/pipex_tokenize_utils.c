@@ -17,7 +17,7 @@ char	*first_token(char *src, int i)
 	char	*token;
 
 	token = (char *)ft_calloc(i + 1, sizeof(char));
-	check_failed_memory(token);
+	memchk(token);
 	ft_strlcpy(token, src, i + 1);
 	return (token);
 }
@@ -50,7 +50,7 @@ static char	*quote_token(char *src, int i, char c)
 		++i;
 	}
 	ret = (char *)ft_calloc(mem + 1, sizeof(char));
-	check_failed_memory(ret);
+	memchk(ret);
 	i = 0;
 	while (!(src[x] == c || src[x] == c))
 	{
@@ -75,7 +75,7 @@ static char	*normal_token(char *src, int i)
 		++i;
 	}
 	ret = (char *)ft_calloc(mem + 1, sizeof(char));
-	check_failed_memory(ret);
+	memchk(ret);
 	i = 0;
 	while (!(src[x] == ' ' || src[x] == 0))
 	{

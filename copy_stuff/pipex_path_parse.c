@@ -26,7 +26,7 @@ static char	*stop_space(char *rawprog)
 			break ;
 	}
 	prog = (char *)ft_calloc(i + 1, sizeof(char));
-	check_failed_memory(prog);
+	memchk(prog);
 	while (++j != i)
 		prog[j] = rawprog[j];
 	return (prog);
@@ -40,18 +40,18 @@ static char	**create_args(char *path, char *prog)
 
 	id = -1;
 	args = ft_split(path, ':');
-	check_failed_memory(args);
+	memchk(args);
 	while (args[++id] != NULL)
 	{
 		if (args[id][ft_strlen(args[id]) - 1] != '/')
 		{
 			test = ft_strjoin(args[id], "/");
-			check_failed_memory(test);
+			memchk(test);
 			free(args[id]);
 			args[id] = test;
 		}
 		test = ft_strjoin(args[id], prog);
-		check_failed_memory(test);
+		memchk(test);
 		free(args[id]);
 		args[id] = test;
 	}
@@ -87,7 +87,7 @@ static char	*find_correct_path(char *rawprog, char **env)
 		if (open(args[id], O_RDONLY) != -1)
 		{
 			path = ft_strdup(args[id]);
-			check_failed_memory(path);
+			memchk(path);
 			path[ft_strlen(path) - ft_strlen(prog)] = 0;
 			free_array(args);
 			free(prog);
@@ -111,7 +111,7 @@ char	**check_arguments(char **arg, char **env)
 	while (arg[x] != NULL)
 		x++;
 	list = (char **)ft_calloc(x, sizeof(char **) - 1);
-	check_failed_memory(list);
+	memchk(list);
 	y = -1;
 	while (++y != x - 1)
 	{
@@ -119,7 +119,7 @@ char	**check_arguments(char **arg, char **env)
 			break ;
 		path = find_correct_path(arg[y + 2], env);
 		thinginside = ft_strjoin(path, arg[y + 2]);
-		check_failed_memory(thinginside);
+		memchk(thinginside);
 		free(path);
 		list[y] = thinginside;
 	}
