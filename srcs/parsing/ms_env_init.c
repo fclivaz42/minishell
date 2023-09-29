@@ -6,38 +6,28 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 05:57:49 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 00:36:12 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	fixup_env(t_minishell *msdata)
+static void	fix_shlvl(t_minishell *msdata)
 {
-	char	**split;
-	char	*shell;
-	int		x;
+	char	*value;
 
-	x = -1;
-		new_env_var(msdata, "SHLVL", "1");
-	shell = (char *)memchk(ft_calloc(ft_strlen(find_env(msdata->env, "_")), \
-		sizeof(char)));
-	split = memchk(ft_split(find_env(msdata->env, "_"), '/'));
-	while (split[++x] != 0)
+	if (find_env(msdata->env, "SHLVL") != NULL)
 	{
-		if (ft_strncmp(split[x], ".", 1))
-		{
-			quicc_copy(shell, "/");
-			quicc_copy(shell, split[x]);
-		}
+		value = memchk(ft_itoa(ft_atoi(find_env(msdata->env, "SHLVL")) + 1));
+		replace_env(msdata->env, "SHLVL", value);
+		zerofree(value);
 	}
-	arrayfree(split);
+	else
+		new_env_var(msdata, "SHLVL", "1");
 	if (find_env(msdata->env, "SHELL"))
-		delete_env(msdata, "SHELL");
-	new_env_var(msdata, "SHELL", shell);
-	free(shell);
-	if (find_env(msdata->env, "_"))
-		delete_env(msdata, "_");
+		replace_env(msdata->env, "SHELL", "minishell");
+	else
+		new_env_var(msdata, "SHELL", "minishell");
 }
 
 void	copy_env(char *env[], t_minishell *msdata)
@@ -60,14 +50,8 @@ void	copy_env(char *env[], t_minishell *msdata)
 		new_env_var(msdata, "HOSTNAME", "macOS");
 	if (env != NULL)
 	{
-		if (find_env(msdata->env, "SHLVL") != NULL)
-		{
-			value = memchk(ft_itoa(ft_atoi(find_env(msdata->env, "SHLVL")) + 1));
-			replace_env(msdata->env, "SHLVL", value);
-			zerofree(value);
-		}
-		else
-			new_env_var(msdata, "SHLVL", "1");
-		fixup_env(msdata);
+		fix_shlvl(msdata);
+		if (find_env(msdata->env, "_"))
+			delete_env(msdata, "_");
 	}
 }

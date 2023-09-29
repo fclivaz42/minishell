@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 04:17:28 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 00:31:54 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,10 @@ void	replace_env(t_list *env, char *var_to_change, char *str);
 
 // --- EXTRAS --- //
 
-void	freexit(t_minishell *msdata);
 void	zerofree(char *s);
 void	arrayfree(char **arr);
+void	free_token(t_token *tkn);
+void	freexit(t_minishell *msdata);
 void	quicc_copy(char *dest, char *src);
 char	**list_to_char(t_list *env);
 

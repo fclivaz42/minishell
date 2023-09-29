@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 05:08:40 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/29 19:20:36 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,9 @@ void	new_env_var(t_minishell *msdata, char *newvar, char *value)
 	fullenv[0] = memchk(ft_strdup(newvar));
 	fullenv[1] = memchk(ft_strdup(value));
 	if (msdata->env == NULL)
-	{
-		printf("YOYOYYO FIRST TIME BABEY adding %s=%s as FIRST linK!\n", fullenv[0], fullenv[1]);
 		msdata->env = memchk(ft_lstnew(fullenv));
-	}
 	else
-	{
-		printf("adding %s=%s to the BACk of the chain!\n", fullenv[0], fullenv[1]);
 		ft_lstadd_back(&msdata->env, memchk(ft_lstnew(fullenv)));
-	}
 }
 
 char	*find_env(t_list *env, char *str)
@@ -42,7 +36,7 @@ char	*find_env(t_list *env, char *str)
 	test = (char **)list->content;
 	while (!(str[len] == 0 || str[len] == ' '))
 		len++;
-	while (ft_strncmp(str, test[0], len))
+	while (ft_strncmp(str, test[0], len + 1))
 	{
 		list = list->next;
 		if (list == NULL)
@@ -59,7 +53,7 @@ void	replace_env(t_list *env, char *var_to_change, char *new_var)
 
 	list = env;
 	var = (char **)list->content;
-	while (ft_strncmp(var_to_change, var[0], ft_strlen(var[0])))
+	while (ft_strncmp(var_to_change, var[0], ft_strlen(var[0]) + 1))
 	{
 		list = list->next;
 		if (list == NULL)
@@ -81,7 +75,7 @@ void	delete_env(t_minishell *msdata, char *str)
 	delete = msdata->env;
 	prev = msdata->env;
 	test = (char **)delete->content;
-	while (ft_strncmp(str, test[0], ft_strlen(test[0])))
+	while (ft_strncmp(str, test[0], ft_strlen(test[0]) + 1))
 	{
 		prev = delete;
 		delete = delete->next;

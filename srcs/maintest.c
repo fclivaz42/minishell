@@ -6,12 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 06:02:09 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 00:30:45 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void	free_token(t_token *tkn);
 
 void	freexit(t_minishell *msdata)
 {
@@ -19,13 +18,12 @@ void	freexit(t_minishell *msdata)
 	t_list	*del;
 
 	env = msdata->env;
-	while(env != NULL)
+	while (env != NULL)
 	{
 		del = env;
 		arrayfree(env->content);
 		env = del->next;
 		free(del);
-
 	}
 	zerofree(msdata->pwd);
 	free_token(msdata->commands);
@@ -53,9 +51,9 @@ char	*argmaker(char *line)
 t_token	*stupid_fucking_parse(char *line, t_list *env)
 {
 	t_token	*balls;
-	t_list	*commands;
 	short	x = 0;
 
+	(void)env;
 	balls = memchk(ft_calloc(1, sizeof(t_token)));
 	balls->fd_in = 0;
 	balls->fd_out = 1;
@@ -80,7 +78,7 @@ void	free_token(t_token *tkn)
 	t_list	*del;
 
 	env = tkn->words;
-	while(env != NULL)
+	while (env != NULL)
 	{
 		del = env;
 		zerofree(env->content);
@@ -102,6 +100,8 @@ int	main(int ac, char *av[], char *env[])
 	copy_env(env, msdata);
 	if (find_env(msdata->env, "PWD"))
 		msdata->pwd = memchk(ft_strdup(find_env(msdata->env, "PWD")));
+	else
+		msdata->pwd = memchk(getcwd(NULL, 0));
 	printf("\nWelcome to minishell alpha v0.5!\n\n");
 	while (1 == 1)
 	{

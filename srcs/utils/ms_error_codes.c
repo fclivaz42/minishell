@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:13:58 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 23:04:08 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,10 @@ void	*error_system(int mode, char *file)
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	}
 	else
+	{
 		perror("\033[1;31mError\033[0m");
-	exit(mode);
+		exit(mode);
+	}
 	return (NULL);
 }
 
