@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 19:20:36 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 01:01:57 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*find_env(t_list *env, char *str)
 	int		len;
 
 	len = 0;
+	if (env == NULL)
+		return (NULL);
 	list = env;
 	test = (char **)list->content;
 	while (!(str[len] == 0 || str[len] == ' '))
