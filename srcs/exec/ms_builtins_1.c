@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:45:03 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 04:18:26 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	cd(t_token *tkn, t_minishell *msdata)
 		if (find_env(msdata->env, "PWD") != NULL)
 			replace_env(msdata->env, "PWD", new_dir);
 		else
-			new_env_var(msdata->env, "PWD", new_dir);
+			new_env_var(msdata, "PWD", new_dir);
 	}
 	free(new_dir);
 	return (0);

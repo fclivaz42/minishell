@@ -6,25 +6,23 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:49:29 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 05:57:49 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	fixup_env(t_list *env)
+static void	fixup_env(t_minishell *msdata)
 {
 	char	**split;
 	char	*shell;
 	int		x;
 
 	x = -1;
-	if (find_env(env, "SHLVL") != NULL)
-		replace_env(env, "SHLVL", ft_itoa(ft_atoi(find_env(env, "SHLVL")) + 1));
-	else
-		new_env_var(env, "SHLVL", "1");
-	shell = (char *)memchk(ft_calloc(ft_strlen(getenv("_")), sizeof(char)));
-	split = memchk(ft_split(getenv("_"), '/'));
+		new_env_var(msdata, "SHLVL", "1");
+	shell = (char *)memchk(ft_calloc(ft_strlen(find_env(msdata->env, "_")), \
+		sizeof(char)));
+	split = memchk(ft_split(find_env(msdata->env, "_"), '/'));
 	while (split[++x] != 0)
 	{
 		if (ft_strncmp(split[x], ".", 1))
@@ -34,36 +32,42 @@ static void	fixup_env(t_list *env)
 		}
 	}
 	arrayfree(split);
-	if (find_env(env, "SHELL"))
-		delete_env(env, "SHELL");
-	new_env_var(env, "SHELL", shell);
+	if (find_env(msdata->env, "SHELL"))
+		delete_env(msdata, "SHELL");
+	new_env_var(msdata, "SHELL", shell);
 	free(shell);
-	delete_env(env, "_");
+	if (find_env(msdata->env, "_"))
+		delete_env(msdata, "_");
 }
 
-t_list	*copy_env(char *env[])
+void	copy_env(char *env[], t_minishell *msdata)
 {
 	int		x;
-	int		len;
-	char	**var;
-	t_list	*newenv;
+	char	*newvar;
+	char	*value;
 
 	x = -1;
+	msdata->env = NULL;
 	while (env[++x] != NULL)
 	{
-		var = (char **)memchk(ft_calloc(3, sizeof(char *)));
-		len = ft_strlen(env[x]) - ft_strlen(ft_strchr(env[x], '='));
-		var[0] = (char *)memchk(ft_calloc(len + 1, sizeof(char)));
-		ft_strlcpy(var[0], env[x], len + 1);
-		var[1] = memchk(ft_strdup(ft_strchr(env[x], '=') + 1));
-		if (x == 0)
-			newenv = ft_lstnew(var);
-		if (x > 0)
-			ft_lstadd_back(&newenv, memchk(ft_lstnew(var)));
+		value = ft_strchr(env[x], '=');
+		value[0] = 0;
+		++value;
+		newvar = env[x];
+		new_env_var(msdata, newvar, value);
 	}
+	if (__APPLE__ && !find_env(msdata->env, "HOSTNAME"))
+		new_env_var(msdata, "HOSTNAME", "macOS");
 	if (env != NULL)
-		fixup_env(newenv);
-	if (__APPLE__ && !find_env(newenv, "HOSTNAME"))
-		new_env_var(newenv, "HOSTNAME", "macOS");
-	return (newenv);
+	{
+		if (find_env(msdata->env, "SHLVL") != NULL)
+		{
+			value = memchk(ft_itoa(ft_atoi(find_env(msdata->env, "SHLVL")) + 1));
+			replace_env(msdata->env, "SHLVL", value);
+			zerofree(value);
+		}
+		else
+			new_env_var(msdata, "SHLVL", "1");
+		fixup_env(msdata);
+	}
 }

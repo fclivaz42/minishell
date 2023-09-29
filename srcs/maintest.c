@@ -6,14 +6,30 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:53:24 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 06:02:09 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+void	free_token(t_token *tkn);
 
 void	freexit(t_minishell *msdata)
 {
+	t_list	*env;
+	t_list	*del;
+
+	env = msdata->env;
+	while(env != NULL)
+	{
+		del = env;
+		arrayfree(env->content);
+		env = del->next;
+		free(del);
+
+	}
+	zerofree(msdata->pwd);
+	free_token(msdata->commands);
+	free(msdata);
 	exit(0);
 }
 
@@ -58,31 +74,44 @@ t_token	*stupid_fucking_parse(char *line, t_list *env)
 	return (balls);
 }
 
+void	free_token(t_token *tkn)
+{
+	t_list	*env;
+	t_list	*del;
+
+	env = tkn->words;
+	while(env != NULL)
+	{
+		del = env;
+		zerofree(env->content);
+		env = del->next;
+		free(del);
+	}
+	free(tkn);
+}
+
 int	main(int ac, char *av[], char *env[])
 {
 	char		*prompt;
 	char		*rl;
-	t_minishell	msdata;	
+	t_minishell	*msdata;	
 
 	(void)ac;
 	(void)av;
-/*	pid = fork();
-	if (pid == 0)
-		clear_term(env);
-	waitpid(pid, NULL, 0); */
-	msdata.env = copy_env(env);
-	msdata.pwd = memchk(ft_strdup(find_env(msdata.env, "PWD")));
+	msdata = memchk(ft_calloc(1, sizeof(t_minishell)));
+	copy_env(env, msdata);
+	if (find_env(msdata->env, "PWD"))
+		msdata->pwd = memchk(ft_strdup(find_env(msdata->env, "PWD")));
 	printf("\nWelcome to minishell alpha v0.5!\n\n");
 	while (1 == 1)
 	{
-		prompt = readline_proompter(msdata.env, msdata.pwd);
+		prompt = readline_proompter(msdata->env, msdata->pwd);
 		rl = memchk(readline(prompt));
-		msdata.commands = stupid_fucking_parse(rl, msdata.env);
-		execute(msdata.commands, &msdata);
-/*		while (commands[++x] != NULL)
-			printf("command %d is: %s\n", x, commands[x]); */
+		msdata->commands = stupid_fucking_parse(rl, msdata->env);
+		execute(msdata->commands, msdata);
 		zerofree(prompt);
-//		waitpid(msdata.pid, NULL, 0);
+		zerofree(rl);
+		free_token(msdata->commands);
 	}
 	return (0);
 }

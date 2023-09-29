@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 20:15:46 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 04:17:28 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ int		execute(t_token *tkn, t_minishell *msdata);
 
 // --- ENVIRONMENT UTILS --- //
 
-t_list	*copy_env(char *env[]);
+void	copy_env(char *env[], t_minishell *msdata);
 char	*find_env(t_list *env, char *str);
-void	delete_env(t_list *env, char *str);
-void	new_env_var(t_list *env, char *newvar, char *value);
+void	delete_env(t_minishell *msdata, char *str);
+void	new_env_var(t_minishell *msdata, char *newvar, char *value);
 void	replace_env(t_list *env, char *var_to_change, char *str);
 
 // --- PIPING UTILS --- //

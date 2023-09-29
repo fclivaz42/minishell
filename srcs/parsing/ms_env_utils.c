@@ -6,20 +6,29 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:49:04 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 05:08:40 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-void	new_env_var(t_list *env, char *newvar, char *value)
+void	new_env_var(t_minishell *msdata, char *newvar, char *value)
 {
 	char	**fullenv;
 
 	fullenv = (char **)memchk(ft_calloc(3, sizeof(char **)));
 	fullenv[0] = memchk(ft_strdup(newvar));
 	fullenv[1] = memchk(ft_strdup(value));
-	ft_lstadd_back(&env, memchk(ft_lstnew(fullenv)));
+	if (msdata->env == NULL)
+	{
+		printf("YOYOYYO FIRST TIME BABEY adding %s=%s as FIRST linK!\n", fullenv[0], fullenv[1]);
+		msdata->env = memchk(ft_lstnew(fullenv));
+	}
+	else
+	{
+		printf("adding %s=%s to the BACk of the chain!\n", fullenv[0], fullenv[1]);
+		ft_lstadd_back(&msdata->env, memchk(ft_lstnew(fullenv)));
+	}
 }
 
 char	*find_env(t_list *env, char *str)
@@ -61,14 +70,16 @@ void	replace_env(t_list *env, char *var_to_change, char *new_var)
 	var[1] = memchk(ft_strdup(new_var));
 }
 
-void	delete_env(t_list *env, char *str)
+void	delete_env(t_minishell *msdata, char *str)
 {
 	t_list	*delete;
 	t_list	*prev;
 	char	**test;
+	int		x;
 
-	delete = env;
-	prev = env;
+	x = 0;
+	delete = msdata->env;
+	prev = msdata->env;
 	test = (char **)delete->content;
 	while (ft_strncmp(str, test[0], ft_strlen(test[0])))
 	{
@@ -77,8 +88,12 @@ void	delete_env(t_list *env, char *str)
 		if (delete == NULL)
 			return ;
 		test = (char **)delete->content;
+		++x;
 	}
-	prev->next = delete->next;
+	if (x > 0)
+		prev->next = delete->next;
+	else
+		msdata->env = delete->next;
 	arrayfree((char **)delete->content);
 	free(delete);
 }

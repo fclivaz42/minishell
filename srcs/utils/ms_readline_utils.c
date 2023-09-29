@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:27:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:40:10 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/29 06:06:35 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void	build_prompt(char *prompt, char **vars)
 	if (vars[1] != NULL)
 		quicc_copy(prompt, vars[1]);
 	quicc_copy(prompt, "]: ");
-	quicc_copy(prompt, vars[2]);
+	if (vars[2] != NULL)
+		quicc_copy(prompt, vars[2]);
 	quicc_copy(prompt, ">$ ");
 	zerofree(vars[2]);
 }
@@ -48,7 +49,10 @@ char	*readline_proompter(t_list *env, char *pwd)
 
 	vars[0] = find_env(env, "USER");
 	vars[1] = find_env(env, HOSTNAME);
-	vars[2] = squigglify(env, pwd);
+	if (pwd != NULL)
+		vars[2] = squigglify(env, pwd);
+	else
+		vars[2] = NULL;
 	prompt = (char *)memchk(ft_calloc(ft_strlen(vars[0]) + \
 		ft_strlen(vars[1]) + ft_strlen(vars[2]) + \
 		ft_strlen("[@]:  >$ ") + 1, sizeof(char)));
