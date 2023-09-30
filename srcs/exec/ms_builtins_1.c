@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 00:31:46 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 03:44:36 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ static char	*relative_dir(char **path, char *pwd)
 		comparison_moment(new_dir, rw, path[x]);
 	arrayfree(path);
 	rw = memchk(ft_strdup(new_dir));
-	ft_putendl_fd(rw, 1);
 	zerofree(new_dir);
 	return (rw);
 }
@@ -101,8 +100,10 @@ int	cd(t_token *tkn, t_minishell *msdata)
 	char	*new_dir;
 
 	if (tkn->words->next == NULL)
-		if (find_env(msdata->env, "HOME"))
-			return (update_pwd(find_env(msdata->env, "HOME"), msdata));
+		if (!find_env(msdata->env, "HOME"))
+			return (1);
+	if (tkn->words->next == NULL)
+		return (update_pwd(find_env(msdata->env, "HOME"), msdata));
 	path = tkn->words->next->content;
 	if (path[0] == '/')
 		new_dir = memchk(ft_strdup(path));
