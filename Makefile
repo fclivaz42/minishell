@@ -7,7 +7,6 @@ SRCS	=	${SUBDIR}/minishell.c\
 		${SUBDIR}/exec/ms_pathify.c\
 		${SUBDIR}/exec/ms_builtins_1.c\
 		${SUBDIR}/exec/ms_builtins_2.c\
-		${SUBDIR}/parsing/ms_parse.c\
 		${SUBDIR}/parsing/ms_env_init.c\
 		${SUBDIR}/parsing/ms_env_utils.c\
 		${SUBDIR}/utils/ms_error_codes.c\
@@ -34,6 +33,7 @@ ${OBJDIR}/%.o:	${SUBDIR}/%.c | ${OBJDIR}
 
 ${OBJDIR}:
 		mkdir -p $@
+		mkdir -p ${OBJDIR}/exec
 		mkdir -p ${OBJDIR}/parsing
 		mkdir -p ${OBJDIR}/utils
 
