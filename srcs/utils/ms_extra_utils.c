@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:21:02 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 20:36:37 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 23:31:31 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ void	quicc_copy(char *dest, char *src)
 		dest[x + y] = src[y];
 }
 
-char	**concatenate(t_list *list)
+char	**token_to_array(t_list *list)
 {
 	int		x;
 	char	**commands;
 	t_list	*args;
-	t_list	*lstfree;
 
 	args = list;
 	x = ft_lstsize(list);
@@ -38,19 +37,14 @@ char	**concatenate(t_list *list)
 	x = 0;
 	while (args != NULL)
 	{
-		if (x > 0)
-			free(lstfree);
 		commands[x] = (char *)args->content;
-		lstfree = args;
 		args = args->next;
 		++x;
 	}
-	if (x > 0)
-		free(lstfree);
 	return (commands);
 }
 
-char	**list_to_char(t_list *env)
+char	**env_to_array(t_list *env)
 {
 	char	**ret;
 	char	**tmp;

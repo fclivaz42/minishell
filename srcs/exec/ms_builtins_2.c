@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:17:11 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 21:33:34 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 23:30:49 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	env(t_token *tkn, t_minishell *msdata)
 	x = -1;
 	if (msdata->env == NULL)
 		return (write(tkn->fd_out, "\n", 1));
-	print = list_to_char(msdata->env);
+	print = env_to_array(msdata->env);
 	while (print[++x] != NULL)
 		ft_putendl_fd(print[x], tkn->fd_out);
 	arrayfree(print);
@@ -29,9 +29,16 @@ int	env(t_token *tkn, t_minishell *msdata)
 
 int	unset(t_token *tkn, t_minishell *msdata)
 {
+	t_list	*test;
+
 	if (tkn->words->next == NULL)
 		return (!error_bad_format("unset"));
-	delete_env(msdata, tkn->words->next->content);
+	test = tkn->words->next;
+	while (test != NULL)
+	{
+		delete_env(msdata, test->content);
+		test = test->next;
+	}
 	return (0);
 }
 
@@ -40,7 +47,6 @@ int	mexport(t_token *tkn, t_minishell *msdata)
 	char	*var;
 	char	*str;
 	int		size;
-	int		x;	
 
 	if (tkn->words->next == NULL)
 		return (env(tkn, msdata) + 1);
@@ -50,7 +56,6 @@ int	mexport(t_token *tkn, t_minishell *msdata)
 		error_bad_format(tkn->words->next->content);
 		return (1);
 	}
-	x = -1;
 	str++;
 	size = (char *)str - (char *)tkn->words->next->content;
 	var = (char *)memchk(ft_calloc(size, sizeof(char)));

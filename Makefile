@@ -4,6 +4,7 @@ OBJDIR	= objs
 
 SRCS	=	${SUBDIR}/minishell.c\
 		${SUBDIR}/exec/ms_exec.c\
+		${SUBDIR}/exec/ms_pathify.c\
 		${SUBDIR}/exec/ms_builtins_1.c\
 		${SUBDIR}/exec/ms_builtins_2.c\
 		${SUBDIR}/parsing/ms_parse.c\

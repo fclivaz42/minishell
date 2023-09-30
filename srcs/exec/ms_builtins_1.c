@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 20:11:33 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 21:51:45 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	comparison_moment(char *new_dir, char *rw, char *path)
 	}
 }
 
-static char	*relative_dir(char **path, char *pwd)
+char	*relative_dir(char **path, char *pwd)
 {
 	char	*new_dir;
 	char	*rw;
@@ -70,6 +70,7 @@ static char	*relative_dir(char **path, char *pwd)
 	x = -1;
 	new_dir = (char *)memchk(ft_calloc(1025, sizeof(char)));
 	quicc_copy(new_dir, pwd);
+	rw = ft_strchr(new_dir, 0);
 	while (path[++x] != 0)
 		comparison_moment(new_dir, rw, path[x]);
 	arrayfree(path);

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 20:03:01 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 21:56:19 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,18 @@ static void	fix_shlvl(t_minishell *msdata)
 	}
 	else
 		new_env_var(msdata, "SHLVL", "1");
+}
+
+static void	fix_shell(t_minishell *msdata, char *av)
+{
+	char	*shell;
+
+	shell = relative_dir(memchk(ft_split(av, '/')), msdata->pwd);
 	if (find_env(msdata->env, "SHELL"))
-		replace_env(msdata->env, "SHELL", "minishell");
+		replace_env(msdata->env, "SHELL", shell);
 	else
-		new_env_var(msdata, "SHELL", "minishell");
+		new_env_var(msdata, "SHELL", shell);
+	zerofree(shell);
 }
 
 static void	copy_env(char *env[], t_minishell *msdata)
@@ -56,13 +64,14 @@ static void	copy_env(char *env[], t_minishell *msdata)
 	}
 }
 
-void	init_mshell(char *env[], t_minishell *msdata)
+void	init_mshell(char *av, char *env[], t_minishell *msdata)
 {
 	copy_env(env, msdata);
 	if (find_env(msdata->env, "PWD"))
 		msdata->pwd = memchk(ft_strdup(find_env(msdata->env, "PWD")));
 	else
 		msdata->pwd = memchk(getcwd(NULL, 0));
+	fix_shell(msdata, av);
 	printf("\nWelcome to %sminishell%s alpha %sv0.5%s!\n\n", CBBL, RSET, \
 		ERED, RSET);
 }

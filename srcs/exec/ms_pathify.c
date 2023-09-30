@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_pathed_command.c                                :+:      :+:    :+:   */
+/*   ms_pathify.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:10:12 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:51:06 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 23:08:00 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,32 +51,27 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 		}
 		zerofree(fcmd);
 	}
-	error_system(-1, cmd + 1);
 	if (x > 0)
-	{
 		arrayfree(p);
-		zerofree(fcmd);
-	}
 	return (NULL);
 }
 
-static char	*make_pathed(char *str, t_list *env)
+char	*make_pathed(char *str, t_list *env)
 {
 	int		x;
-	char	*ntrp;
 	char	*cmd;
 	char	*fcmd;
 
-	x = 0;
-	while (!(ft_strchr(" \t\n\0", str[x])))
-		++x;
-	cmd = (char *)memchk(ft_calloc(x + 2, sizeof(char)));
+	cmd = (char *)memchk(ft_calloc(ft_strlen(str) + 2, sizeof(char)));
 	cmd[0] = '/';
-	x = 0;
-	while (!(ft_strchr(" \t\n\0", str[x])))
-		++x;
-	interpreter((str + x), env, str[x]);
+	quicc_copy(cmd, str);
 	fcmd = find_real_cmd(cmd, ft_strlen(cmd), unpack_path(env));
 	zerofree(cmd);
-	return (fcmd);
+	if (fcmd != NULL)
+	{
+		free(str);
+		return (fcmd);
+	}
+	else
+		return (str);
 }

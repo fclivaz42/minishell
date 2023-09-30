@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:27:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 19:55:15 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 21:46:17 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static char	*squigglify(t_list *env, char *pwd)
 	return (squiggled);
 }
 
-static void	build_prompt(char *prompt, char **vars)
+static void	build_prompt(int ecode, char *prompt, char **vars)
 {
 	quicc_copy(prompt, "[");
 	quicc_copy(prompt, CPRP);
@@ -45,7 +45,7 @@ static void	build_prompt(char *prompt, char **vars)
 		quicc_copy(prompt, vars[2]);
 	quicc_copy(prompt, RSET);
 	quicc_copy(prompt, "]");
-	if (g_exit_code == 0)
+	if (ecode == 0)
 		quicc_copy(prompt, EGRN);
 	else
 		quicc_copy(prompt, ERED);
@@ -65,7 +65,7 @@ static int	calculate_len(char **vars)
 	return (x);
 }
 
-char	*readline_proompter(t_list *env, char *pwd)
+char	*readline_proompter(int ecode, t_list *env, char *pwd)
 {
 	char	*vars[8];
 	char	*prompt;
@@ -82,8 +82,8 @@ char	*readline_proompter(t_list *env, char *pwd)
 	vars[6] = CBLU;
 	vars[7] = RSET;
 	prompt = (char *)memchk(ft_calloc(calculate_len(vars) + 1, sizeof(char)));
-	build_prompt(prompt, vars);
-	if (g_exit_code == 0)
+	build_prompt(ecode, prompt, vars);
+	if (ecode == 0)
 		quicc_copy(prompt, "-> ");
 	else
 		quicc_copy(prompt, "-x ");

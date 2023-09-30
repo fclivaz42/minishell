@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 20:01:43 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 23:35:37 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,40 +39,48 @@ typedef struct s_token
 
 typedef struct s_minishell
 {
+	int		ecode;
 	pid_t	pid;
 	char	*pwd;
 	t_list	*env;
 	t_token	*commands;
 }	t_minishell;
 
-int		g_exit_code;
 
-// --- MINISHELL --- //
+// --- PARSING --- //
 
 t_list	*ms_fullparse(char *str, t_list *env);
-char	*readline_proompter(t_list *env, char *pwd);
 char	*interpreter(char *raw, t_list *env, char mode);
-char	**concatenate(t_list *list);
-int		execute(t_token *tkn, t_minishell *msdata);
 
-// --- ENVIRONMENT UTILS --- //
+// --- ENVIRONMENT --- //
 
+char	**env_to_array(t_list *env);
 char	*find_env(t_list *env, char *str);
 void	delete_env(t_minishell *msdata, char *str);
 void	new_env_var(t_minishell *msdata, char *newvar, char *value);
 void	replace_env(t_list *env, char *var_to_change, char *str);
-void	init_mshell(char *env[], t_minishell *msdata);
+void	init_mshell(char *av, char *env[], t_minishell *msdata);
 
-// --- PIPING UTILS --- //
+// --- PIPING --- //
 
-// --- EXTRAS --- //
+// --- EXECUTION --- //
+
+char	**token_to_array(t_list *list);
+char	*make_pathed(char *str, t_list *env);
+int		execute(t_token *tkn, t_minishell *msdata);
+
+// --- MEMORY MANAGEMENT --- //
 
 void	zerofree(char *s);
 void	arrayfree(char **arr);
 void	free_token(t_token *tkn);
 void	freexit(t_minishell *msdata);
+
+// --- EXTRA UTILS --- //
+
+char	*relative_dir(char **path, char *pwd);
+char	*readline_proompter(int ecode, t_list *env, char *pwd);
 void	quicc_copy(char *dest, char *src);
-char	**list_to_char(t_list *env);
 
 // --- BUILT-IN COMMANDS --- //
 
