@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:10:12 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:08:00 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 23:42:28 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 
 char	*make_pathed(char *str, t_list *env)
 {
-	int		x;
 	char	*cmd;
 	char	*fcmd;
 
