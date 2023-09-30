@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 00:31:54 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 20:01:43 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ typedef struct s_minishell
 	t_token	*commands;
 }	t_minishell;
 
+int		g_exit_code;
+
 // --- MINISHELL --- //
 
 t_list	*ms_fullparse(char *str, t_list *env);
@@ -55,11 +57,11 @@ int		execute(t_token *tkn, t_minishell *msdata);
 
 // --- ENVIRONMENT UTILS --- //
 
-void	copy_env(char *env[], t_minishell *msdata);
 char	*find_env(t_list *env, char *str);
 void	delete_env(t_minishell *msdata, char *str);
 void	new_env_var(t_minishell *msdata, char *newvar, char *value);
 void	replace_env(t_list *env, char *var_to_change, char *str);
+void	init_mshell(char *env[], t_minishell *msdata);
 
 // --- PIPING UTILS --- //
 
@@ -87,7 +89,7 @@ void	*memchk(void *str);
 void	*error_system(int mode, char *file);
 void	*error_unsupported_character(char c);
 
-// --- DEBUG SWITCHES --- //
+// --- DEFINE HELL --- //
 
 # ifndef DEBUG
 #  define DEBUG 0
@@ -100,4 +102,12 @@ void	*error_unsupported_character(char c);
 #  undef HOSTNAME
 #  define HOSTNAME "NAME"
 # endif
+# define ERED	"\033[1;31m"
+# define EGRN	"\033[1;32m"
+# define EYEL	"\033[1;33m"
+# define CPRP	"\033[1m\x1b[38;2;123;91;227m"
+# define CGLD	"\033[1m\x1b[38;2;235;155;28m"
+# define CBBL	"\033[1m\x1b[38;2;2;224;242m"
+# define CBLU	"\x1b[38;2;2;224;242m"
+# define RSET	"\x1b[0m"
 #endif

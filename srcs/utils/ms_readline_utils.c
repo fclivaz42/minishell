@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:27:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 03:51:59 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 19:55:15 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,47 @@ static char	*squigglify(t_list *env, char *pwd)
 	return (squiggled);
 }
 
-void	build_prompt(char *prompt, char **vars)
+static void	build_prompt(char *prompt, char **vars)
 {
 	quicc_copy(prompt, "[");
+	quicc_copy(prompt, CPRP);
 	if (vars[0] != NULL)
 		quicc_copy(prompt, vars[0]);
-	quicc_copy(prompt, "@");
+	quicc_copy(prompt, RSET);
+	quicc_copy(prompt, " @ ");
+	quicc_copy(prompt, CGLD);
 	if (vars[1] != NULL)
 		quicc_copy(prompt, vars[1]);
-	quicc_copy(prompt, "]: ");
+	quicc_copy(prompt, RSET);
+	quicc_copy(prompt, "]-[");
+	quicc_copy(prompt, CBLU);
 	if (vars[2] != NULL)
 		quicc_copy(prompt, vars[2]);
-	quicc_copy(prompt, ">$ ");
+	quicc_copy(prompt, RSET);
+	quicc_copy(prompt, "]");
+	if (g_exit_code == 0)
+		quicc_copy(prompt, EGRN);
+	else
+		quicc_copy(prompt, ERED);
 	zerofree(vars[2]);
+}
+
+static int	calculate_len(char **vars)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	x = ft_strlen("[ @ ]-[]-> ");
+	while (++y < 8)
+		x = x + ft_strlen(vars[y]);
+	x = x + (3 * ft_strlen(RSET));
+	return (x);
 }
 
 char	*readline_proompter(t_list *env, char *pwd)
 {
-	char	*vars[3];
+	char	*vars[8];
 	char	*prompt;
 
 	vars[0] = find_env(env, "USER");
@@ -53,9 +76,17 @@ char	*readline_proompter(t_list *env, char *pwd)
 		vars[2] = squigglify(env, pwd);
 	else
 		vars[2] = NULL;
-	prompt = (char *)memchk(ft_calloc(ft_strlen(vars[0]) + \
-		ft_strlen(vars[1]) + ft_strlen(vars[2]) + \
-		ft_strlen("[@]:  >$ ") + 1, sizeof(char)));
+	vars[3] = ERED;
+	vars[4] = CPRP;
+	vars[5] = CGLD;
+	vars[6] = CBLU;
+	vars[7] = RSET;
+	prompt = (char *)memchk(ft_calloc(calculate_len(vars) + 1, sizeof(char)));
 	build_prompt(prompt, vars);
+	if (g_exit_code == 0)
+		quicc_copy(prompt, "-> ");
+	else
+		quicc_copy(prompt, "-x ");
+	quicc_copy(prompt, RSET);
 	return (prompt);
 }

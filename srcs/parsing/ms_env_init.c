@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 00:36:12 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 20:03:01 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static void	fix_shlvl(t_minishell *msdata)
 		new_env_var(msdata, "SHELL", "minishell");
 }
 
-void	copy_env(char *env[], t_minishell *msdata)
+static void	copy_env(char *env[], t_minishell *msdata)
 {
 	int		x;
 	char	*newvar;
@@ -54,4 +54,15 @@ void	copy_env(char *env[], t_minishell *msdata)
 		if (find_env(msdata->env, "_"))
 			delete_env(msdata, "_");
 	}
+}
+
+void	init_mshell(char *env[], t_minishell *msdata)
+{
+	copy_env(env, msdata);
+	if (find_env(msdata->env, "PWD"))
+		msdata->pwd = memchk(ft_strdup(find_env(msdata->env, "PWD")));
+	else
+		msdata->pwd = memchk(getcwd(NULL, 0));
+	printf("\nWelcome to %sminishell%s alpha %sv0.5%s!\n\n", CBBL, RSET, \
+		ERED, RSET);
 }

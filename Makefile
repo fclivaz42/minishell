@@ -2,7 +2,7 @@ SUBDIR	= srcs
 
 OBJDIR	= objs
 
-SRCS	=	${SUBDIR}/maintest.c\
+SRCS	=	${SUBDIR}/minishell.c\
 		${SUBDIR}/exec/ms_exec.c\
 		${SUBDIR}/exec/ms_builtins_1.c\
 		${SUBDIR}/exec/ms_builtins_2.c\
@@ -11,6 +11,7 @@ SRCS	=	${SUBDIR}/maintest.c\
 		${SUBDIR}/parsing/ms_env_utils.c\
 		${SUBDIR}/utils/ms_error_codes.c\
 		${SUBDIR}/utils/ms_extra_utils.c\
+		${SUBDIR}/utils/ms_memory_utils.c\
 		${SUBDIR}/utils/ms_readline_utils.c\
 
 OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})

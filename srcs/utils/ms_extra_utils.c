@@ -6,27 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:21:02 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/28 22:52:02 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/09/30 20:36:37 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	zerofree(char *s)
-{
-	ft_bzero(s, ft_strlen(s));
-	free(s);
-}
-
-void	arrayfree(char **arr)
-{
-	int		x;
-
-	x = -1;
-	while (arr[++x] != NULL)
-		zerofree(arr[x]);
-	free(arr);
-}
 
 void	quicc_copy(char *dest, char *src)
 {

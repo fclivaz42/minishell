@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 04:31:25 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 20:11:33 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int	cd(t_token *tkn, t_minishell *msdata)
 		new_dir = relative_dir(memchk(ft_split(path, '/')), msdata->pwd);
 	fd = opendir(new_dir);
 	if (fd == NULL)
-		error_system(2, new_dir);
+		error_system(2, path);
 	else
 	{
 		update_pwd(new_dir, msdata);
