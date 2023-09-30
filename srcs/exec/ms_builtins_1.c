@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 03:44:36 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 04:31:25 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static char	*relative_dir(char **path, char *pwd)
 
 static int	update_pwd(char *new_dir, t_minishell *msdata)
 {
+	chdir(new_dir);
 	if (find_env(msdata->env, "OLDPWD") != NULL)
 		replace_env(msdata->env, "OLDPWD", msdata->pwd);
 	else
@@ -114,7 +115,6 @@ int	cd(t_token *tkn, t_minishell *msdata)
 		error_system(2, new_dir);
 	else
 	{
-		chdir(new_dir);
 		update_pwd(new_dir, msdata);
 		closedir(fd);
 	}

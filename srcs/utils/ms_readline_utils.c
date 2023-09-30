@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:27:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/29 06:06:35 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/09/30 03:51:59 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static char	*squigglify(t_list *env, char *pwd)
 	pwd = pwd + ft_strlen(home);
 	squiggled = (char *)memchk(ft_calloc(ft_strlen(pwd) + 2, sizeof(char)));
 	ft_strlcpy(squiggled, "~", 2);
-	ft_strlcat(squiggled, pwd, ft_strlen(pwd) + 2);
+	quicc_copy(squiggled, pwd);
 	return (squiggled);
 }
 
