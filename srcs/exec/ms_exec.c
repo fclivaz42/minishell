@@ -6,27 +6,28 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 17:58:17 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:32:00 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/03 18:55:47 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	external(t_token *tkn, t_minishell *msdata)
+static int	external(t_token *tkn, t_minishell *msdata)
 {
 	char	**commands;
 
 	msdata->pid = fork();
 	if (msdata->pid < 0)
-		error_system(errno, "syscall");
+		memchk(NULL);
 	if (msdata->pid == 0)
 	{
 		tkn->words->content = make_pathed(tkn->words->content, msdata->env);
 		commands = token_to_array(tkn->words);
 		// --- PIPE MOMENT
 		if (execve(commands[0], commands, env_to_array(msdata->env)) == -1)
-			error_system(errno, tkn->words->content);
+			exit (error_system(errno, tkn->words->content));
 	}
+	return (0);
 }
 
 int	execute(t_token *tkn, t_minishell *msdata)
@@ -52,6 +53,6 @@ int	execute(t_token *tkn, t_minishell *msdata)
 		freexit(msdata);
 	}
 	else
-		external(tkn, msdata);
+		return (external(tkn, msdata));
 	return (0);
 }

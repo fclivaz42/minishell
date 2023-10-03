@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:35:37 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/03 20:04:18 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ typedef struct s_minishell
 	t_token	*commands;
 }	t_minishell;
 
-
 // --- PARSING --- //
 
-t_list	*ms_fullparse(char *str, t_list *env);
-char	*interpreter(char *raw, t_list *env, char mode);
+t_list	*interparse(char *rl, t_list *env);
+int		count_dquotes(char *str, t_list *env);
+int		count_squotes(char *str);
+int		copy_quotes(char *ntrp, char *str, t_list *env, char c);
 
 // --- ENVIRONMENT --- //
 
@@ -94,8 +95,8 @@ int		unset(t_token *tkn, t_minishell *msdata);
 
 void	*error_bad_format(char *src);
 void	*memchk(void *str);
-void	*error_system(int mode, char *file);
 void	*error_unsupported_character(char c);
+int		error_system(int mode, char *file);
 
 // --- DEFINE HELL --- //
 

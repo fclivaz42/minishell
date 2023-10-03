@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:02:22 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/03 18:56:03 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void	mshell_loop(t_minishell *msdata)
 			zerofree(prompt);
 			zerofree(rl);
 			free_token(msdata->commands);
-			waitpid(msdata->pid, NULL, 0);
+			waitpid(msdata->pid, &msdata->ecode, 0);
 		}
 	}
 }

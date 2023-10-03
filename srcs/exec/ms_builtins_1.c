@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 21:51:45 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/03 18:10:56 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	echo(t_token *tkn)
 	return (0);
 }
 
-static void	comparison_moment(char *new_dir, char *rw, char *path)
+static void	comparison_moment(char *new_dir, char *rw, char *path, int size)
 {
 	int	x;
 
@@ -45,10 +45,10 @@ static void	comparison_moment(char *new_dir, char *rw, char *path)
 			while (rw[++x] != 0)
 				rw[x] = 0;
 		else
-			ft_bzero(rw + 1, 1024);
+			ft_bzero(rw + 1, size);
 	}
 	else if (!ft_strncmp(path, ".", ft_strlen(path) + 1))
-		rw = rw;
+		size = size + 0;
 	else
 	{
 		rw = ft_strchr(new_dir, 0);
@@ -66,13 +66,19 @@ char	*relative_dir(char **path, char *pwd)
 	char	*new_dir;
 	char	*rw;
 	int		x;
+	int		size;
 
 	x = -1;
-	new_dir = (char *)memchk(ft_calloc(1025, sizeof(char)));
+	size = 0;
+	while (path[++x] != NULL)
+		size = size + ft_strlen(path[x]);
+	size = size + x + ft_strlen(pwd) + 1;
+	new_dir = (char *)memchk(ft_calloc(size, sizeof(char)));
 	quicc_copy(new_dir, pwd);
+	x = -1;
 	rw = ft_strchr(new_dir, 0);
 	while (path[++x] != 0)
-		comparison_moment(new_dir, rw, path[x]);
+		comparison_moment(new_dir, rw, path[x], size);
 	arrayfree(path);
 	rw = memchk(ft_strdup(new_dir));
 	zerofree(new_dir);
@@ -113,7 +119,7 @@ int	cd(t_token *tkn, t_minishell *msdata)
 		new_dir = relative_dir(memchk(ft_split(path, '/')), msdata->pwd);
 	fd = opendir(new_dir);
 	if (fd == NULL)
-		error_system(2, path);
+		return (error_system(2, path));
 	else
 	{
 		update_pwd(new_dir, msdata);

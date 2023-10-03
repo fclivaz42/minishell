@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 18:53:04 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/03 18:06:34 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 void	*memchk(void *str)
 {
 	if (str == NULL)
-		return (error_system(errno, "MEMFAIL"));
+	{
+		perror("\033[1;31mError\033[0m");
+		exit(errno);
+	}
 	return (str);
 }
 
@@ -27,7 +30,7 @@ void	*error_bad_format(char *src)
 	return (NULL);
 }
 
-void	*error_system(int mode, char *file)
+int	error_system(int mode, char *file)
 {
 	if (mode == 2)
 		perror(file);
@@ -36,12 +39,7 @@ void	*error_system(int mode, char *file)
 		ft_putstr_fd(file, 2);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	}
-	else
-	{
-		perror("\033[1;31mError\033[0m");
-		exit(mode);
-	}
-	return (NULL);
+	return (errno);
 }
 
 void	*error_unsupported_character(char c)
