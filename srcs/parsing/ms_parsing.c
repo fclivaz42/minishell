@@ -6,36 +6,41 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/03 20:30:00 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/04 03:32:03 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
+static int	expand_var(char *str, t_list *env, int *size)
+{
+	int		x;
+	char	c;
+	char	*var;
+
+	x = 0;
+	++str;
+	var = str;
+	while (ft_isalnum(str[x]))
+		++x;
+	c = str[x];
+	str[x] = 0;
+	*size = *size + ft_strlen(find_env(env, var));
+	str[x] = c;
+	return (x);
+}
+
 static int	find_size(char *str, t_list *env)
 {
 	int		size;
-	char	c;
 
 	size = 0;
 	while (!(ft_strchr("<|> \t\n\0", *str)))
 	{
 		if (*str == 34 || *str == 39)
-		{
-			c = *str;
-			if (c == 34)
-				size = size + count_dquotes(str, env);
-			else if (c == 39)
-				size = size + count_squotes(str);
-			while (*(str - 1) != c)
-				++str;
-		}
-		if (*str == '$')
-		{
-			size = size + expand_var((str + 1), env);
-			while (ft_isalnum(*str))
-				++str;
-		}
+			str = str + count_quotes(str, env, &size, *str);
+		else if (*str == '$')
+			str = str + expand_var(str, env, &size);
 		if (ft_strchr("<|> \t\n\0", *str))
 			return (size);
 		++size;
@@ -60,7 +65,6 @@ static char	*interpret(char *str, t_list *env)
 		}
 		else if (*str == 34 || *str == 39)
 			str = str + copy_quotes(&ntrp[x], str, env, *str);
-
 	}
 	return (ntrp);
 }
