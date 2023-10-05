@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ms_quotes_fn.c                                     :+:      :+:    :+:   */
+/*   ms_parsing_2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/04 01:44:09 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/05 19:49:21 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,43 +16,62 @@ int	count_quotes(char *str, t_list *env, int *size, char q)
 {
 	int		s;
 	int		x;
-	char	c;
-	char	*var;
 
 	s = 0;
 	x = 0;
 	while (str[++x] != q)
 	{
 		if (str[x] == '$' && q == 34)
-		{
-			var = &str[x];
-			while (!(str[x] == ' ' || str[x] == 34))
-				++x;
-			c = str[x];
-			str[x] = 0;
-			s = s + ft_strlen(find_env(env, (var + 1)));
-			str[x] = c;
-		}
+			x = x + expand_var(&str[x], env, &s);
+		if (str[x] == q)
+			break ;
 		++s;
-		++x;
 	}
 	*size = *size + s - 1;
 	return (x);
 }
 
-int	copy_quotes(char *ntrp, char *str, t_list *env, char c)
+int	copy_quotes(char *ntrp, char *str, t_list *env, char q)
 {
-	int	x;
+	int		x;
+	int		y;
+	int		len;
 
+	len = count_quotes(str, env, &x, q);
 	x = -1;
+	y = 0;
 	++str;
-	if (c == 34)
+	while (str[++x] != q)
 	{
+		if (str[x] == '$' && q == 34)
+		{
+			x = x + copy_var(&ntrp[y], &str[x], env);
+			while (ntrp[y] != 0)
+				++y;
+		}
+		else
+			ntrp[y++] = str[x];
+		if (str[x] == q)
+			break ;
 	}
-	else
-	{
-		while (str[++x] != 39)
-			ntrp[x] = str[x];
-	}
+	return (len + 1);
+}
+
+int	copy_var(char *ntrp, char *str, t_list *env)
+{
+	int		x;
+	char	c;
+	char	*var;
+
+	x = 0;
+	++str;
+	var = str;
+	while (ft_isalnum(str[x]) || str[x] == '?')
+		++x;
+	c = str[x];
+	str[x] = 0;
+	if (find_env(env, var))
+		quicc_copy(ntrp, find_env(env, var));
+	str[x] = c;
 	return (x + 1);
 }

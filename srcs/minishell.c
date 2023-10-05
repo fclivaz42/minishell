@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/05 04:36:18 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/05 17:16:49 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static int	validator(char *rl, t_minishell *msdata)
 	str = rl;
 	while (*rl)
 	{
-		if (ft_strchr("<>:&*{}^[]()\\;%~`?!#", *rl))
+		if (ft_strchr("<>:&*{}^[]()\\;%~`!#", *rl))
 		{
 			msdata->ecode = 1;
 			return (!error_unsupported_character(*rl));

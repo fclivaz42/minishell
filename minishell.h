@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/05 04:16:35 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/05 18:46:23 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,9 @@ typedef struct s_minishell
 
 t_list	*interparse(char *rl, t_list *env);
 int		count_quotes(char *str, t_list *env, int *size, char q);
-int		copy_quotes(char *ntrp, char *str, t_list *env, char c);
+int		copy_quotes(char *ntrp, char *str, t_list *env, char q);
+int		copy_var(char *ntrp, char *str, t_list *env);
+int		expand_var(char *str, t_list *env, int *size);
 
 // --- ENVIRONMENT --- //
 
