@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/03 18:06:34 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/05 04:09:28 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*memchk(void *str)
 void	*error_bad_format(char *src)
 {
 	ft_putstr_fd("\033[1;31mError:\033[0m \033[1;33m", STDERR_FILENO);
-	ft_putstr_fd(src, 2);
+	ft_putstr_fd(src, STDERR_FILENO);
 	ft_putendl_fd("\033[0m: incorrect syntax.\n", STDERR_FILENO);
 	return (NULL);
 }
@@ -45,7 +45,7 @@ int	error_system(int mode, char *file)
 void	*error_unsupported_character(char c)
 {
 	ft_putstr_fd("\033[1;31mError:\033[0m \033[1;33m", STDERR_FILENO);
-	ft_putchar_fd(c, 2);
+	ft_putchar_fd(c, STDERR_FILENO);
 	ft_putendl_fd("\033[0m is an unsupported character.", STDERR_FILENO);
 	return (NULL);
 }
