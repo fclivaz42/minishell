@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/05 04:09:28 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/09 21:12:15 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,12 @@ void	*memchk(void *str)
 	return (str);
 }
 
-void	*error_bad_format(char *src)
+void	*error_bad_format(char *src, t_minishell *msdata)
 {
 	ft_putstr_fd("\033[1;31mError:\033[0m \033[1;33m", STDERR_FILENO);
 	ft_putstr_fd(src, STDERR_FILENO);
 	ft_putendl_fd("\033[0m: incorrect syntax.\n", STDERR_FILENO);
+	msdata->ecode = 1;
 	return (NULL);
 }
 
@@ -39,13 +40,14 @@ int	error_system(int mode, char *file)
 		ft_putstr_fd(file, 2);
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	}
-	return (errno);
+	return (127);
 }
 
-void	*error_unsupported_character(char c)
+void	*error_unsupported_character(char c, t_minishell *msdata)
 {
 	ft_putstr_fd("\033[1;31mError:\033[0m \033[1;33m", STDERR_FILENO);
 	ft_putchar_fd(c, STDERR_FILENO);
 	ft_putendl_fd("\033[0m is an unsupported character.", STDERR_FILENO);
+	msdata->ecode = 1;
 	return (NULL);
 }

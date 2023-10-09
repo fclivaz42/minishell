@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:27:28 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 21:46:17 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/09 20:57:01 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static char	*squigglify(t_list *env, char *pwd)
 	char	*squiggled;
 
 	home = find_env(env, "HOME");
+	if (home == NULL)
+		return (memchk(ft_strdup(pwd)));
 	if (ft_strncmp(pwd, home, ft_strlen(home)))
 		return (memchk(ft_strdup(pwd)));
 	pwd = pwd + ft_strlen(home);

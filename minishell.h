@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/05 18:46:23 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/09 22:40:06 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <signal.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <sys/wait.h>
 # include "libft/libft.h"
 
@@ -63,7 +64,10 @@ void	new_env_var(t_minishell *msdata, char *newvar, char *value);
 void	replace_env(t_list *env, char *var_to_change, char *str);
 void	init_mshell(char *av, char *env[], t_minishell *msdata);
 
-// --- PIPING --- //
+// --- PIPING --- 
+
+char	*here_doc(char *eof);
+t_token	*tokenifier(char *rl, t_list *env);
 
 // --- EXECUTION --- //
 
@@ -77,6 +81,7 @@ void	zerofree(char *s);
 void	arrayfree(char **arr);
 void	free_token(t_token *tkn);
 void	freexit(t_minishell *msdata);
+void	reset(t_token *commands, char *rl, char *prompt, char *ecopy);
 
 // --- EXTRA UTILS --- //
 
@@ -94,9 +99,9 @@ int		unset(t_token *tkn, t_minishell *msdata);
 
 // --- BUNGIE SPECIFIC --- //
 
-void	*error_bad_format(char *src);
+void	*error_bad_format(char *src, t_minishell *msdata);
 void	*memchk(void *str);
-void	*error_unsupported_character(char c);
+void	*error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);
 
 // --- DEFINE HELL --- //

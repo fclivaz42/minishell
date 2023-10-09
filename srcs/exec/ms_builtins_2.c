@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:17:11 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:30:49 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/09 19:35:07 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	unset(t_token *tkn, t_minishell *msdata)
 	t_list	*test;
 
 	if (tkn->words->next == NULL)
-		return (!error_bad_format("unset"));
+		return (!error_bad_format("unset", msdata));
 	test = tkn->words->next;
 	while (test != NULL)
 	{
@@ -49,11 +49,11 @@ int	mexport(t_token *tkn, t_minishell *msdata)
 	int		size;
 
 	if (tkn->words->next == NULL)
-		return (env(tkn, msdata) + 1);
+		return (env(tkn, msdata));
 	str = ft_strchr(tkn->words->next->content, '=');
 	if (str == NULL)
 	{
-		error_bad_format(tkn->words->next->content);
+		error_bad_format(tkn->words->next->content, msdata);
 		return (1);
 	}
 	str++;

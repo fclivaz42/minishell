@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 20:31:44 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 20:36:33 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/09 21:32:00 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,12 @@ void	freexit(t_minishell *msdata)
 	free_token(msdata->commands);
 	free(msdata);
 	exit(0);
+}
+
+void	reset(t_token *commands, char *rl, char *prompt, char *ecopy)
+{
+	free_token(commands);
+	zerofree(rl);
+	zerofree(prompt);
+	zerofree(ecopy);
 }

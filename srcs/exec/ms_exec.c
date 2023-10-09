@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 17:58:17 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/03 18:55:47 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/09 19:40:39 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	external(t_token *tkn, t_minishell *msdata)
 		commands = token_to_array(tkn->words);
 		// --- PIPE MOMENT
 		if (execve(commands[0], commands, env_to_array(msdata->env)) == -1)
-			exit (error_system(errno, tkn->words->content));
+			exit (error_system(-1, tkn->words->content));
 	}
 	return (0);
 }

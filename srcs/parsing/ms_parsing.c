@@ -6,31 +6,11 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/05 19:53:43 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/09 20:14:55 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-#include <stdio.h>
-
-int	expand_var(char *str, t_list *env, int *size)
-{
-	int		x;
-	char	c;
-	char	*var;
-
-	x = 0;
-	++str;
-	var = str;
-	while (ft_isalnum(str[x]) || str[x] == '?')
-		++x;
-	c = str[x];
-	str[x] = 0;
-	if (find_env(env, var))
-		*size = *size + ft_strlen(find_env(env, var)) - 1;
-	str[x] = c;
-	return (x);
-}
 
 static int	find_size(char *str, t_list *env)
 {
@@ -51,13 +31,35 @@ static int	find_size(char *str, t_list *env)
 	return (size + 1);
 }
 
-static char	*interpret(char *str, int *delta, t_list *env)
+static char	*redirections(char *str, size_t *delta)
+{
+	char	*rdr;
+
+	if (!ft_strncmp(str, "<<", 2))
+		rdr = (char *)memchk(ft_strdup("<<"));
+	else if (!ft_strncmp(str, ">>", 2))
+		rdr = (char *)memchk(ft_strdup(">>"));
+	else if (!ft_strncmp(str, "|", 1))
+		rdr = (char *)memchk(ft_strdup("|"));
+	else if (!ft_strncmp(str, "<", 1))
+		rdr = (char *)memchk(ft_strdup("<"));
+	else if (!ft_strncmp(str, ">", 1))
+		rdr = (char *)memchk(ft_strdup(">"));
+	else
+		rdr = NULL;
+	*delta = *delta + ft_strlen(rdr);
+	return (rdr);
+}
+
+static char	*interpret(char *str, size_t *delta, t_list *env)
 {
 	char	*ntrp;
 	char	*d;
 	int		x;
 
 	x = 0;
+	if (ft_strchr("<|>", *str))
+		return (redirections(str, delta));
 	d = str;
 	ntrp = (char *)memchk(ft_calloc(find_size(str, env), sizeof(char)));
 	while (!(ft_strchr("<|> \t\n\0", *str)))
@@ -74,7 +76,7 @@ static char	*interpret(char *str, int *delta, t_list *env)
 		while (ntrp[x] != 0)
 			++x;
 	}
-	*delta = (char *)str - (char *)d;
+	*delta = *delta + ((char *)str - (char *)d);
 	return (ntrp);
 }
 
@@ -82,20 +84,22 @@ t_list	*interparse(char *rl, t_list *env)
 {
 	t_list	*list;
 	int		x;
-	int		delta;
+	size_t	d;
 
 	x = 0;
-	while (*rl != 0)
+	d = 0;
+	while (d < ft_strlen(rl))
 	{
-		while (ft_strchr(" \t\n", *rl))
-			++rl;
+		while (rl[d] != 0 && ft_strchr(" \t\n", rl[d]))
+			++d;
+		if (rl[d] == 0)
+			return (list);
 		if (x == 0)
-			list = memchk(ft_lstnew(interpret(rl, &delta, env)));
+			list = memchk(ft_lstnew(interpret(&rl[d], &d, env)));
 		if (x > 0)
 			ft_lstadd_back(&list, memchk(\
-				ft_lstnew(interpret(rl, &delta, env))));
+				ft_lstnew(interpret(&rl[d], &d, env))));
 		++x;
-		rl = rl + delta;
 	}
 	return (list);
 }

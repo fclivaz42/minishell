@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 19:31:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 21:56:19 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/09 20:58:51 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,6 @@ void	init_mshell(char *av, char *env[], t_minishell *msdata)
 	else
 		msdata->pwd = memchk(getcwd(NULL, 0));
 	fix_shell(msdata, av);
-	printf("\nWelcome to %sminishell%s alpha %sv0.5%s!\n\n", CBBL, RSET, \
+	printf("\nWelcome to %sminishell%s beta %sv0.75%s!\n\n", CBBL, RSET, \
 		ERED, RSET);
 }

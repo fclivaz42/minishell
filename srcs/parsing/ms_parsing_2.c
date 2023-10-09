@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/05 19:49:21 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/09 18:49:34 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,25 @@ int	copy_quotes(char *ntrp, char *str, t_list *env, char q)
 			break ;
 	}
 	return (len + 1);
+}
+
+int	expand_var(char *str, t_list *env, int *size)
+{
+	int		x;
+	char	c;
+	char	*var;
+
+	x = 0;
+	++str;
+	var = str;
+	while (ft_isalnum(str[x]) || str[x] == '?')
+		++x;
+	c = str[x];
+	str[x] = 0;
+	if (find_env(env, var))
+		*size = *size + ft_strlen(find_env(env, var)) - 1;
+	str[x] = c;
+	return (x);
 }
 
 int	copy_var(char *ntrp, char *str, t_list *env)
