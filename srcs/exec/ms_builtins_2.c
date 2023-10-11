@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:17:11 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/09 19:35:07 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/11 18:21:02 by fclivaz          ###   LAUSANNE.CH       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	env(t_token *tkn, t_minishell *msdata)
 
 	x = -1;
 	if (msdata->env == NULL)
-		return (write(tkn->fd_out, "\n", 1));
+		return (write(STDOUT_FILENO, "\n", 1));
 	print = env_to_array(msdata->env);
 	while (print[++x] != NULL)
-		ft_putendl_fd(print[x], tkn->fd_out);
+		ft_putendl_fd(print[x], STDOUT_FILENO);
 	arrayfree(print);
 	return (0);
 }
