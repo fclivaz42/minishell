@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/09 22:40:06 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/12 21:32:31 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	init_mshell(char *av, char *env[], t_minishell *msdata);
 // --- PIPING --- 
 
 char	*here_doc(char *eof);
+int		open_infile(char *path);
+int		open_outfile(char *path, int mode);
 t_token	*tokenifier(char *rl, t_list *env);
+t_token	*pipework(t_token *tkn);
 
 // --- EXECUTION --- //
 
@@ -81,7 +84,6 @@ void	zerofree(char *s);
 void	arrayfree(char **arr);
 void	free_token(t_token *tkn);
 void	freexit(t_minishell *msdata);
-void	reset(t_token *commands, char *rl, char *prompt, char *ecopy);
 
 // --- EXTRA UTILS --- //
 
@@ -99,9 +101,9 @@ int		unset(t_token *tkn, t_minishell *msdata);
 
 // --- BUNGIE SPECIFIC --- //
 
-void	*error_bad_format(char *src, t_minishell *msdata);
 void	*memchk(void *str);
-void	*error_unsupported_character(char c, t_minishell *msdata);
+int		error_bad_format(char *src, t_minishell *msdata);
+int		error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);
 
 // --- DEFINE HELL --- //
@@ -120,9 +122,9 @@ int		error_system(int mode, char *file);
 # define ERED	"\033[1;31m"
 # define EGRN	"\033[1;32m"
 # define EYEL	"\033[1;33m"
-# define CPRP	"\033[1m\x1b[38;2;123;91;227m"
-# define CGLD	"\033[1m\x1b[38;2;235;155;28m"
+# define CPRP	"\033[1m\x1b[38;2;21;212;237m"
+# define CGLD	"\033[1m\x1b[38;2;21;237;79m"
 # define CBBL	"\033[1m\x1b[38;2;2;224;242m"
-# define CBLU	"\x1b[38;2;2;224;242m"
+# define CBLU	"\x1b[38;2;247;197;30m"
 # define RSET	"\x1b[0m"
 #endif

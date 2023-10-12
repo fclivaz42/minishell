@@ -6,11 +6,16 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 22:55:57 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/09 22:57:46 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/12 21:32:34 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+t_token	*pipework(t_token *tkn)
+{
+	return (tkn);
+}
 
 static char	*read_realloc(char *str, char *str2, int psize)
 {
@@ -47,4 +52,24 @@ char	*here_doc(char *eof)
 		free(rl);
 	}
 	return (strfull);
+}
+
+int	open_outfile(char *path, int mode)
+{
+	int	fd;
+
+	fd = open(path, O_WRONLY | mode | O_CREAT, 0644);
+	if (fd < 0)
+		error_system(errno, path);
+	return (fd);
+}
+
+int	open_infile(char *path)
+{
+	int	fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		error_system(errno, path);
+	return (fd);
 }

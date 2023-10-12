@@ -6,12 +6,38 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/09 20:48:42 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/12 20:59:23 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-#include <sys/wait.h>
+
+static void	tknprint(t_token *tkn)
+{
+	int		x;
+	t_list	*print;
+
+	x = 0;
+	while (tkn != NULL)
+	{
+		printf("DATA FOR TOKEN %d WITH ADDR %p:\n", x, tkn);
+		printf("FD IN: %d\n", tkn->fd_in);
+		printf("FD OUT: %d\n", tkn->fd_out);
+		printf("WORDS: \n");
+		print = tkn->words;
+		while (print != NULL)
+		{
+			ft_printf("%s%s ", CBBL, print->content);
+			print = print->next;
+		}
+		ft_putendl_fd(RSET, 1);
+		printf("NEXT TOKEN: %p\n", tkn->next);
+		printf("PREV TOKEN: %p\n", tkn->prev);
+		ft_putendl_fd("", 1);
+		tkn = tkn->next;
+		++x;
+	}
+}
 
 static int	validator(char *rl, t_minishell *msdata)
 {
@@ -23,8 +49,8 @@ static int	validator(char *rl, t_minishell *msdata)
 	str = rl;
 	while (*rl)
 	{
-		if (ft_strchr("<>:&*{}^[]()\\;%~`!#", *rl))
-			return (!error_unsupported_character(*rl, msdata));
+		if (ft_strchr(":&*{}^[]()\\;%~`!#", *rl))
+			return (error_unsupported_character(*rl, msdata));
 		if (*rl == 34 || *rl == 39)
 		{
 			c = *rl;
@@ -32,37 +58,50 @@ static int	validator(char *rl, t_minishell *msdata)
 			while (!(*rl == c || *rl == 0))
 				++rl;
 			if (*rl == 0)
-				return (!error_bad_format(str, msdata));
+				return (error_bad_format(str, msdata));
 		}
 		++rl;
 	}
 	return (0);
 }
 
+static void	reset(t_minishell *msdata, char *rl, char *prompt, int valid)
+{
+	char	*ecopy;
+
+	ecopy = ft_itoa(msdata->ecode);
+	if (find_env(msdata->env, "?"))
+		replace_env(msdata->env, "?", ecopy);
+	else
+		new_env_var(msdata, "?", ecopy);
+	zerofree(rl);
+	zerofree(ecopy);
+	zerofree(prompt);
+	if (!valid)
+		free_token(msdata->commands);
+}
+
 static void	mshell_loop(t_minishell *msdata)
 {
 	char	*prompt;
 	char	*rl;
-	char	*ecopy;
+	int		valid;
 
 	while (1)
 	{
 		prompt = readline_proompter(msdata->ecode, \
 			msdata->env, msdata->pwd);
 		rl = memchk(readline(prompt));
-		if (!validator(rl, msdata))
+		valid = validator(rl, msdata);
+		if (!valid)
 		{
 			add_history(rl);
 			msdata->commands = tokenifier(rl, msdata->env);
-			msdata->ecode = execute(msdata->commands, msdata);
-			waitpid(msdata->pid, &msdata->ecode, 0);
+			tknprint(msdata->commands);
+	//		msdata->ecode = execute(msdata->commands, msdata);
+	//		waitpid(msdata->pid, &msdata->ecode, 0);
 		}
-		ecopy = ft_itoa(msdata->ecode);
-		if (find_env(msdata->env, "?"))
-			replace_env(msdata->env, "?", ecopy);
-		else
-			new_env_var(msdata, "?", ecopy);
-		reset(msdata->commands, rl, prompt, ecopy);
+		reset(msdata, rl, prompt, valid);
 	}
 }
 
