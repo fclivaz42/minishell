@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 03:30:27 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 18:43:53 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ typedef struct s_minishell
 
 // --- PARSING --- //
 
-t_list	*interparse(char *rl, t_list *env);
 int		count_quotes(char *str, t_list *env, int *size, char q);
 int		copy_quotes(char *ntrp, char *str, t_list *env, char q);
 int		copy_var(char *ntrp, char *str, t_list *env);
 int		expand_var(char *str, t_list *env, int *size);
+t_list	*interparse(char *rl, t_list *env);
 
 // --- ENVIRONMENT --- //
 
@@ -66,17 +66,19 @@ void	init_mshell(char *av, char *env[], t_minishell *msdata);
 
 // --- PIPING --- 
 
+int		chredir(t_token *tkn, int mode);
+int		open_infile(t_minishell *msdata, char *path);
+int		open_outfile(t_minishell *msdata, char *path, int mode);
 char	*here_doc(char *eof);
-int		open_infile(char *path);
-int		open_outfile(char *path, int mode);
-t_token	*tokenifier(char *rl, t_list *env);
-t_token	*pipework(t_token *tkn);
+t_token	*rcmp(t_minishell *msdata, t_token *tkn, int *valid);
+t_token	*tokenifier(char *rl, t_minishell *msdata, int *valid);
+t_token	*pipework(t_minishell *msdata, t_token *tkn, int *valid);
 
 // --- EXECUTION --- //
 
+int		execute(t_token *tkn, t_minishell *msdata);
 char	**token_to_array(t_list *list);
 char	*make_pathed(char *str, t_list *env);
-int		execute(t_token *tkn, t_minishell *msdata);
 
 // --- MEMORY MANAGEMENT --- //
 
@@ -102,6 +104,7 @@ int		unset(t_token *tkn, t_minishell *msdata);
 // --- BUNGIE SPECIFIC --- //
 
 void	*memchk(void *str);
+void	*error_bad_piping(char *str);
 int		error_bad_format(char *src, t_minishell *msdata);
 int		error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);

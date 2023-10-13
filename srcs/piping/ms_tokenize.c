@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 20:15:40 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 03:08:03 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 18:45:23 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static t_token	*mktoken(t_list *lst)
 	return (tkn);
 }
 
-static t_token	*piped_command(t_list *nlst)
+static t_token	*piped_command(t_minishell *msdata, t_list *nlst, int *valid)
 {
 	t_token	*tkn;
 	int		x;
@@ -74,22 +74,22 @@ static t_token	*piped_command(t_list *nlst)
 		nlst = move_list(nlst);
 		++x;
 	}
-	return (pipework(tkn));
+	return (pipework(msdata, tkn, valid));
 }
 
-t_token	*tokenifier(char *rl, t_list *env)
+t_token	*tokenifier(char *rl, t_minishell *msdata, int *valid)
 {
 	t_list	*parsed;
 	t_list	*words;
 	char	*test;
 
-	parsed = interparse(rl, env);
+	parsed = interparse(rl, msdata->env);
 	words = parsed;
 	while (parsed != NULL)
 	{
 		test = parsed->content;
 		if (ft_strchr("<|>", test[0]))
-			return (piped_command(words));
+			return (piped_command(msdata, words, valid));
 		parsed = parsed->next;
 	}
 	return (mktoken(words));

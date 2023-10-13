@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 20:31:44 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/12 20:20:52 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 19:54:15 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,10 @@ void	free_token(t_token *tkn)
 		env = del->next;
 		free(del);
 	}
+	if (tkn->fd_in != STDIN_FILENO)
+		close(tkn->fd_in);
+	if (tkn->fd_out != STDOUT_FILENO)
+		close(tkn->fd_out);
 	free(tkn);
 }
 

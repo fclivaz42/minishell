@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 04:31:54 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 19:53:02 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ static int	validator(char *rl, t_minishell *msdata)
 static void	reset(t_minishell *msdata, char *rl, char *prompt, int valid)
 {
 	char	*ecopy;
+	t_token	*mem;
+	t_token	*nxt;
 
 	ecopy = ft_itoa(msdata->ecode);
 	if (find_env(msdata->env, "?"))
@@ -78,7 +80,15 @@ static void	reset(t_minishell *msdata, char *rl, char *prompt, int valid)
 	zerofree(ecopy);
 	zerofree(prompt);
 	if (!valid)
-		free_token(msdata->commands);
+	{
+		mem = msdata->commands;
+		while (mem != NULL)
+		{
+			nxt = mem->next;
+			free_token(mem);
+			mem = nxt;
+		}
+	}
 }
 
 static void	mshell_loop(t_minishell *msdata)
@@ -96,10 +106,10 @@ static void	mshell_loop(t_minishell *msdata)
 		if (!valid)
 		{
 			add_history(rl);
-			msdata->commands = tokenifier(rl, msdata->env);
+			msdata->commands = tokenifier(rl, msdata, &valid);
 			tknprint(msdata->commands);
-			msdata->ecode = execute(msdata->commands, msdata);
-			waitpid(msdata->pid, &msdata->ecode, 0);
+			if (!valid)
+				msdata->ecode = execute(msdata->commands, msdata);
 		}
 		reset(msdata, rl, prompt, valid);
 	}
