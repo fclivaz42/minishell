@@ -9,6 +9,7 @@ SRCS	=	${SUBDIR}/minishell.c\
 		${SUBDIR}/exec/ms_builtins_2.c\
 		${SUBDIR}/piping/ms_tokenize.c\
 		${SUBDIR}/piping/ms_heredocs.c\
+		${SUBDIR}/piping/ms_pipework.c\
 		${SUBDIR}/parsing/ms_parsing.c\
 		${SUBDIR}/parsing/ms_env_init.c\
 		${SUBDIR}/parsing/ms_env_utils.c\

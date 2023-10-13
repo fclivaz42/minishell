@@ -6,19 +6,19 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/12 20:59:23 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 03:32:08 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	tknprint(t_token *tkn)
+void	tknprint(t_token *tkn)
 {
 	int		x;
 	t_list	*print;
 
 	x = 0;
-	while (tkn != NULL)
+	while (x == 0)
 	{
 		printf("DATA FOR TOKEN %d WITH ADDR %p:\n", x, tkn);
 		printf("FD IN: %d\n", tkn->fd_in);

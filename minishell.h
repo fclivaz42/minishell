@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/12 21:32:31 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 03:30:27 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void	*memchk(void *str);
 int		error_bad_format(char *src, t_minishell *msdata);
 int		error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);
+void	tknprint(t_token *tkn);
 
 // --- DEFINE HELL --- //
 

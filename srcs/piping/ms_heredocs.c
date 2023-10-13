@@ -6,16 +6,11 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 22:55:57 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/12 21:32:34 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 00:31:53 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-t_token	*pipework(t_token *tkn)
-{
-	return (tkn);
-}
 
 static char	*read_realloc(char *str, char *str2, int psize)
 {

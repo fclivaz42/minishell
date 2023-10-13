@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 20:15:40 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/12 21:44:17 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 03:08:03 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,17 @@ static t_list	*move_list(t_list *nlst)
 	test = nlst->content;
 	if (!ft_strchr("<|>", test[0]))
 	{
-		hold = nlst->next;
-		nlst->next = NULL;
-		return (hold);
-	}
-	test = nlst->next->content;
-	while (!ft_strchr("<|>", test[0]))
-	{
-		nlst = nlst->next;
-		if (nlst == NULL)
-			return (NULL);
 		if (nlst->next != NULL)
 			test = nlst->next->content;
+		while (!ft_strchr("<|>", test[0]))
+		{
+			nlst = nlst->next;
+			if (nlst == NULL)
+				return (NULL);
+			if (nlst->next == NULL)
+				break ;
+			test = nlst->next->content;
+		}
 	}
 	hold = nlst->next;
 	nlst->next = NULL;
@@ -86,7 +85,6 @@ t_token	*tokenifier(char *rl, t_list *env)
 
 	parsed = interparse(rl, env);
 	words = parsed;
-	printf("\nParsed.\n");
 	while (parsed != NULL)
 	{
 		test = parsed->content;
