@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 03:32:08 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 04:31:54 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	tknprint(t_token *tkn)
 	t_list	*print;
 
 	x = 0;
-	while (x == 0)
+	while (tkn != NULL)
 	{
 		printf("DATA FOR TOKEN %d WITH ADDR %p:\n", x, tkn);
 		printf("FD IN: %d\n", tkn->fd_in);
@@ -31,8 +31,8 @@ void	tknprint(t_token *tkn)
 			print = print->next;
 		}
 		ft_putendl_fd(RSET, 1);
-		printf("NEXT TOKEN: %p\n", tkn->next);
 		printf("PREV TOKEN: %p\n", tkn->prev);
+		printf("NEXT TOKEN: %p\n", tkn->next);
 		ft_putendl_fd("", 1);
 		tkn = tkn->next;
 		++x;
@@ -98,8 +98,8 @@ static void	mshell_loop(t_minishell *msdata)
 			add_history(rl);
 			msdata->commands = tokenifier(rl, msdata->env);
 			tknprint(msdata->commands);
-	//		msdata->ecode = execute(msdata->commands, msdata);
-	//		waitpid(msdata->pid, &msdata->ecode, 0);
+			msdata->ecode = execute(msdata->commands, msdata);
+			waitpid(msdata->pid, &msdata->ecode, 0);
 		}
 		reset(msdata, rl, prompt, valid);
 	}

@@ -6,16 +6,19 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 00:31:38 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 03:38:26 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/13 04:27:13 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	rinoutfile(t_token *tkn, int mode, int mode2)
+static t_token	*rinoutfile(t_token **ptkn, int mode, int mode2)
 {
+	t_token	*ret;
 	char	*path;
+	t_token	*tkn;
 
+	tkn = *ptkn;
 	path = tkn->next->words->content;
 	if (mode2 == 0)
 		tkn->next->fd_in = open_infile(path);
@@ -23,52 +26,68 @@ static void	rinoutfile(t_token *tkn, int mode, int mode2)
 		tkn->prev->fd_out = open_outfile(path, mode);
 	tkn->prev->next = tkn->next;
 	tkn->next->prev = tkn->prev;
+	ret = tkn->next;
 	free_token(tkn);
+	return (ret);
 }
 
-static void	rpipe(t_token *tkn)
+static t_token	*rpipe(t_token **ptkn)
 {
-	int	fd[2];
+	t_token	*ret;
+	t_token	*tkn;
+	int		fd[2];
 
+	tkn = *ptkn;
 	pipe(fd);
 	tkn->prev->fd_out = fd[1];
 	tkn->next->fd_in = fd[0];
 	tkn->prev->next = tkn->next;
 	tkn->next->prev = tkn->prev;
+	ret = tkn->next;
 	free_token(tkn);
+	return (ret);
 }
 
-static void	rhd(t_token *tkn)
+static t_token	*rhd(t_token **ptkn)
 {
-	int		fd[2];
+	t_token	*ret;
+	t_token	*tkn;
 	char	*hd;
 
+	tkn = *ptkn;
 	hd = here_doc(tkn->next->words->content);
 	zerofree(tkn->next->words->content);
 	tkn->next->words->content = hd;
 	ft_lstadd_back(&tkn->prev->words, tkn->next->words);
 	tkn->prev->next = tkn->next->next;
 	tkn->next->next->prev = tkn->prev;
+	ret = tkn->next->next;
 	free_token(tkn);
+	return (ret);
 }
 
-static void	rcompare(t_token *tkn)
+static t_token	*rcompare(t_token **tkn)
 {
+	t_token	*pass;
 	char	*str;
 
-	str = tkn->words->content;
+	pass = *tkn;
+	str = pass->words->content;
 	if (!ft_strncmp(str, "<<", 2))
-		rhd(tkn);
+		return (rhd(&pass));
 	else if (!ft_strncmp(str, ">>", 2))
-		rinoutfile(tkn, O_APPEND, 1);
+		return (rinoutfile(&pass, O_APPEND, 1));
 	else if (!ft_strncmp(str, "|", 1))
-		rpipe(tkn);
+		return (rpipe(&pass));
 	else if (!ft_strncmp(str, "<", 1))
-		rinoutfile(tkn, 0, 0);
+		return (rinoutfile(&pass, 0, 0));
 	else if (!ft_strncmp(str, ">", 1))
-		rinoutfile(tkn, O_TRUNC, 1);
+		return (rinoutfile(&pass, O_TRUNC, 1));
 	else
-		return ;
+	{
+		printf("token %p is NOT a redir\n", pass);
+		return (pass->next);
+	}
 }
 
 t_token	*pipework(t_token *tkn)
@@ -76,12 +95,11 @@ t_token	*pipework(t_token *tkn)
 	t_token	*tkntest;
 
 	tkntest = tkn;
+	tknprint(tkntest);
 	while (tkntest != NULL)
-	{
-		tknprint(tkntest);
-		rcompare(tkntest);
-		tknprint(tkntest);
-		tkntest = tkntest->next;
-	}
+		tkntest = rcompare(&tkntest);
+	ft_putendl_fd("", 1);
+	ft_putendl_fd("--------", 1);
+	ft_putendl_fd("", 1);
 	return (tkn);
 }

@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 17:58:17 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/11 20:59:42 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/13 04:29:37 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static void	pipemoment(t_token *tkn)
 
 int	execute(t_token *tkn, t_minishell *msdata)
 {
+	printf("Executing command %s\n", tkn->words->content);
 	msdata->pid = fork();
 	if (msdata->pid < 0)
 		memchk(NULL);
