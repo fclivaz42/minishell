@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 22:55:57 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 19:39:08 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/16 21:27:45 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,24 +49,33 @@ char	*here_doc(char *eof)
 	return (strfull);
 }
 
-int	open_outfile(t_minishell *msdata, char *path, int mode)
+int	open_file(t_minishell *msdata, char *path, int crtr, int *v)
 {
 	int	fd;
 
-	fd = open(path, O_WRONLY | mode | O_CREAT, 0644);
+	if (crtr >= 0)
+		fd = open(path, O_WRONLY | crtr | O_CREAT, 0644);
+	else
+		fd = open(path, O_RDONLY);
 	if (fd < 0)
 		msdata->ecode = error_system(errno, path);
 	return (fd);
 }
 
-int	open_infile(t_minishell *msdata, char *path)
+int	rsigncheck(char *str)
 {
-	int	fd;
-
-	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		msdata->ecode = error_system(errno, path);
-	return (fd);
+	if (!ft_strncmp(str, "<<", ft_strlen(str) + 1))
+		return (1);
+	else if (!ft_strncmp(str, ">>", ft_strlen(str) + 1))
+		return (1);
+	else if (!ft_strncmp(str, "|", ft_strlen(str) + 1))
+		return (1);
+	else if (!ft_strncmp(str, "<", ft_strlen(str) + 1))
+		return (1);
+	else if (!ft_strncmp(str, ">", ft_strlen(str) + 1))
+		return (1);
+	else
+		return (0);
 }
 
 t_token	*pipework(t_minishell *msdata, t_token *tkn, int *valid)

@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/13 00:31:38 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 19:38:02 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 15:02:27 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 
 /* --- CHREDIR IS IN MS_EXEC --- */
 
-static t_token	*rinfile(t_minishell *msdata, t_token *tkn, int *valid)
+static t_token	*rinfile(t_minishell *msdata, t_token *tkn, int *v)
 {
 	t_token	*ret;
 	t_list	*del;
 
 	if (chredir(tkn, 1))
-	{
-		*valid = 1;
-		return (error_bad_piping(tkn->words->content));
-	}
-	tkn->next->fd_in = open_infile(msdata, (char *)tkn->next->words->content);
+		return (error_bad_piping(tkn->words->content, v));
+	tkn->next->fd_in = open_file(msdata, tkn->next->words->content, -1, v);
 	if (tkn->next->fd_in == -1)
 	{
-		*valid = 1;
+		*v = 1;
 		return (NULL);
 	}
 	if (tkn->prev != NULL)
@@ -43,40 +40,44 @@ static t_token	*rinfile(t_minishell *msdata, t_token *tkn, int *valid)
 	return (ret);
 }
 
-static t_token	*routfile(t_minishell *msdata, t_token *tkn, int md, int *valid)
+static t_token	*routfile(t_minishell *msdata, t_token *tkn, int md, int *v)
 {
 	t_token	*ret;
 	char	*path;
 
 	if (chredir(tkn, 0))
-	{
-		*valid = 1;
-		return (error_bad_piping(tkn->words->content));
-	}
+		return (error_bad_piping(tkn->words->content, v));
 	path = tkn->next->words->content;
-	tkn->prev->fd_out = open_outfile(msdata, path, md);
+	tkn->prev->fd_out = open_file(msdata, path, md, v);
 	if (tkn->prev->fd_out == -1)
 	{
-		*valid = 1;
+		*v = 1;
 		return (NULL);
 	}
-	tkn->prev->next = tkn->next;
-	tkn->next->prev = tkn->prev;
-	ret = tkn->next;
+	if (tkn->next->next != NULL)
+	{
+		tkn->prev->next = tkn->next->next;
+		tkn->next->next = tkn->prev;
+		ret = tkn->next->next;
+	}
+	else
+	{
+		tkn->prev->next = NULL;
+		ret = NULL;
+	}
+	free_token(tkn->next);
+	tkn->next = NULL;
 	free_token(tkn);
 	return (ret);
 }
 
-static t_token	*rpipe(t_token *tkn, int *valid)
+static t_token	*rpipe(t_token *tkn, int *v)
 {
 	t_token	*ret;
 	int		fd[2];
 
 	if (chredir(tkn, 0))
-	{
-		*valid = 1;
-		return (error_bad_piping(tkn->words->content));
-	}
+		return (error_bad_piping(tkn->words->content, v));
 	pipe(fd);
 	tkn->prev->fd_out = fd[1];
 	tkn->next->fd_in = fd[0];
@@ -87,17 +88,14 @@ static t_token	*rpipe(t_token *tkn, int *valid)
 	return (ret);
 }
 
-static t_token	*rhd(t_token *tkn, int *valid)
+static t_token	*rhd(t_token *tkn, int *v)
 {
 	t_token	*ret;
 	char	*hd;
 	int		fd[2];
 
 	if (chredir(tkn, 0))
-	{
-		*valid = 1;
-		return (error_bad_piping(tkn->words->content));
-	}
+		return (error_bad_piping(tkn->words->content, v));
 	pipe(fd);
 	hd = here_doc(tkn->next->words->content);
 	ft_putstr_fd(hd, fd[1]);

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 16:15:36 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/16 21:16:31 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,12 @@ int	error_unsupported_character(char c, t_minishell *msdata)
 	return (1);
 }
 
-void	*error_bad_piping(char *str)
+void	*error_bad_piping(char *str, int *v)
 {
 	ft_putstr_fd("\033[1;31mError:\033[0m bad parsing near \"\033[1;33m", \
 		STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);
 	ft_putendl_fd("\033[0m\"", STDERR_FILENO);
+	*v = 1;
 	return (NULL);
 }

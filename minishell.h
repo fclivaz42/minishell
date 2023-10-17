@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 18:43:53 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/16 21:28:51 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ void	init_mshell(char *av, char *env[], t_minishell *msdata);
 
 // --- PIPING --- 
 
+int		rsigncheck(char *str);
 int		chredir(t_token *tkn, int mode);
-int		open_infile(t_minishell *msdata, char *path);
-int		open_outfile(t_minishell *msdata, char *path, int mode);
+int		open_file(t_minishell *msdata, char *path, int crtr, int *v);
 char	*here_doc(char *eof);
 t_token	*rcmp(t_minishell *msdata, t_token *tkn, int *valid);
 t_token	*tokenifier(char *rl, t_minishell *msdata, int *valid);
@@ -85,6 +85,7 @@ char	*make_pathed(char *str, t_list *env);
 void	zerofree(char *s);
 void	arrayfree(char **arr);
 void	free_token(t_token *tkn);
+void	clear_tokens(t_token *tkn);
 void	freexit(t_minishell *msdata);
 
 // --- EXTRA UTILS --- //
@@ -104,7 +105,7 @@ int		unset(t_token *tkn, t_minishell *msdata);
 // --- BUNGIE SPECIFIC --- //
 
 void	*memchk(void *str);
-void	*error_bad_piping(char *str);
+void	*error_bad_piping(char *str, int *v);
 int		error_bad_format(char *src, t_minishell *msdata);
 int		error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);

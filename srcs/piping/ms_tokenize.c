@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 20:15:40 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 18:45:23 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/14 18:19:33 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ static t_list	*move_list(t_list *nlst)
 	char	*test;
 
 	test = nlst->content;
-	if (!ft_strchr("<|>", test[0]))
+	if (!rsigncheck(test))
 	{
 		if (nlst->next != NULL)
 			test = nlst->next->content;
-		while (!ft_strchr("<|>", test[0]))
+		while (!rsigncheck(test))
 		{
 			nlst = nlst->next;
 			if (nlst == NULL)
@@ -88,7 +88,7 @@ t_token	*tokenifier(char *rl, t_minishell *msdata, int *valid)
 	while (parsed != NULL)
 	{
 		test = parsed->content;
-		if (ft_strchr("<|>", test[0]))
+		if (rsigncheck(test))
 			return (piped_command(msdata, words, valid));
 		parsed = parsed->next;
 	}

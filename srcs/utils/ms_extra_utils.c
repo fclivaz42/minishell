@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:21:02 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:31:31 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/14 22:42:18 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,21 @@ char	**env_to_array(t_list *env)
 {
 	char	**ret;
 	char	**tmp;
-	char	*var;
+	t_list	*cpy;
 	int		x;
 
 	x = -1;
-	ret = (char **)memchk(ft_calloc(ft_lstsize(env) + 1, sizeof(char *)));
-	while (env != NULL)
+	cpy = env;
+	ret = (char **)memchk(ft_calloc(ft_lstsize(cpy) + 1, sizeof(char *)));
+	while (cpy != NULL)
 	{
-		tmp = (char **)env->content;
-		var = (char *)memchk(ft_calloc(ft_strlen(tmp[0]) + \
+		tmp = (char **)cpy->content;
+		ret[++x] = (char *)memchk(ft_calloc(ft_strlen(tmp[0]) + \
 			ft_strlen(tmp[1]) + 2, sizeof(char)));
-		quicc_copy(var, tmp[0]);
-		quicc_copy(var, "=");
-		quicc_copy(var, tmp[1]);
-		ret[++x] = var;
-		env = env->next;
+		quicc_copy(ret[x], tmp[0]);
+		quicc_copy(ret[x], "=");
+		quicc_copy(ret[x], tmp[1]);
+		cpy = cpy->next;
 	}
 	return (ret);
 }

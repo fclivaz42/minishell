@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 20:31:44 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 19:54:15 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/14 22:13:21 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,20 @@ void	arrayfree(char **arr)
 	while (arr[++x] != NULL)
 		zerofree(arr[x]);
 	free(arr);
+}
+
+void	clear_tokens(t_token *tkn)
+{
+	t_token	*mem;
+	t_token	*del;
+
+	mem = tkn;
+	while (mem != NULL)
+	{
+		del = mem;
+		mem = mem->next;
+		free_token(del);
+	}
 }
 
 void	free_token(t_token *tkn)
@@ -52,6 +66,7 @@ void	freexit(t_minishell *msdata)
 {
 	t_list	*env;
 	t_list	*del;
+	int		ecode;
 
 	env = msdata->env;
 	while (env != NULL)
@@ -62,7 +77,8 @@ void	freexit(t_minishell *msdata)
 		free(del);
 	}
 	zerofree(msdata->pwd);
-	free_token(msdata->commands);
+	clear_tokens(msdata->commands);
+	ecode = msdata->ecode;
 	free(msdata);
-	exit(0);
+	exit(ecode);
 }

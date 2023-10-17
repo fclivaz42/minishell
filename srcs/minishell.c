@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/13 19:53:02 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/16 21:05:10 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,6 @@ static int	validator(char *rl, t_minishell *msdata)
 static void	reset(t_minishell *msdata, char *rl, char *prompt, int valid)
 {
 	char	*ecopy;
-	t_token	*mem;
-	t_token	*nxt;
 
 	ecopy = ft_itoa(msdata->ecode);
 	if (find_env(msdata->env, "?"))
@@ -80,15 +78,8 @@ static void	reset(t_minishell *msdata, char *rl, char *prompt, int valid)
 	zerofree(ecopy);
 	zerofree(prompt);
 	if (!valid)
-	{
-		mem = msdata->commands;
-		while (mem != NULL)
-		{
-			nxt = mem->next;
-			free_token(mem);
-			mem = nxt;
-		}
-	}
+		clear_tokens(msdata->commands);
+	msdata->commands = NULL;
 }
 
 static void	mshell_loop(t_minishell *msdata)
@@ -103,9 +94,10 @@ static void	mshell_loop(t_minishell *msdata)
 			msdata->env, msdata->pwd);
 		rl = memchk(readline(prompt));
 		valid = validator(rl, msdata);
+		if (ft_strlen(rl) > 0)
+			add_history(rl);
 		if (!valid)
 		{
-			add_history(rl);
 			msdata->commands = tokenifier(rl, msdata, &valid);
 			tknprint(msdata->commands);
 			if (!valid)
