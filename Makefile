@@ -17,6 +17,7 @@ SRCS	=	${SUBDIR}/minishell.c\
 		${SUBDIR}/utils/ms_error_codes.c\
 		${SUBDIR}/utils/ms_extra_utils.c\
 		${SUBDIR}/utils/ms_memory_utils.c\
+		${SUBDIR}/utils/ms_signal_utils.c\
 		${SUBDIR}/utils/ms_readline_utils.c\
 
 OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})

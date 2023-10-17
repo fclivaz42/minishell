@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 18:42:24 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 21:13:46 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ void	freexit(t_minishell *msdata);
 
 char	*relative_dir(char **path, char *pwd);
 char	*readline_proompter(int ecode, t_list *env, char *pwd);
+void	waitstatus(t_token *tkn, t_minishell *msdata);
 void	quicc_copy(char *dest, char *src);
 
 // --- BUILT-IN COMMANDS --- //
@@ -105,7 +106,7 @@ int		unset(t_token *tkn, t_minishell *msdata);
 // --- BUNGIE SPECIFIC --- //
 
 void	*memchk(void *str);
-void	*error_bad_piping(char *str, int *v);
+void	*error_bad_piping(char *str, int *v, int mode);
 int		error_bad_format(char *src, t_minishell *msdata);
 int		error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);
@@ -132,4 +133,5 @@ void	tknprint(t_token *tkn);
 # define CBBL	"\033[1m\x1b[38;2;2;224;242m"
 # define CBLU	"\x1b[38;2;247;197;30m"
 # define RSET	"\x1b[0m"
+# define OUTT	"Warning. Trailing characters detected"
 #endif

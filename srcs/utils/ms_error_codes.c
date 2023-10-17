@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:47:53 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/16 21:16:31 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 21:13:11 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,22 @@ int	error_unsupported_character(char c, t_minishell *msdata)
 	return (1);
 }
 
-void	*error_bad_piping(char *str, int *v)
+void	*error_bad_piping(char *str, int *v, int mode)
 {
-	ft_putstr_fd("\033[1;31mError:\033[0m bad parsing near \"\033[1;33m", \
-		STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
-	ft_putendl_fd("\033[0m\"", STDERR_FILENO);
-	*v = 1;
+	if (mode)
+	{
+		ft_putstr_fd("\033[1;31mError:\033[0m bad parsing near \"\033[1;33m", \
+			STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd("\033[0m\"", STDERR_FILENO);
+		*v = 1;
+	}
+	else
+	{
+		ft_putstr_fd("\033[1;33mWarning: ", STDERR_FILENO);
+		ft_putstr_fd("\033[0mtrailing arguments found after '", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd("'. Those will be ignored.", STDERR_FILENO);
+	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/29 15:23:36 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/09 18:49:34 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 21:33:42 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	expand_var(char *str, t_list *env, int *size)
 	c = str[x];
 	str[x] = 0;
 	if (find_env(env, var))
-		*size = *size + ft_strlen(find_env(env, var)) - 1;
+		*size = *size + ft_strlen(find_env(env, var));
 	str[x] = c;
 	return (x);
 }
@@ -91,6 +91,10 @@ int	copy_var(char *ntrp, char *str, t_list *env)
 	str[x] = 0;
 	if (find_env(env, var))
 		quicc_copy(ntrp, find_env(env, var));
+	while (*ntrp != 0)
+		++ntrp;
 	str[x] = c;
+	if (str[x] != 34)
+		ntrp[0] = c;
 	return (x + 1);
 }

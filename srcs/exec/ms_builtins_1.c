@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/16 20:37:33 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 20:29:57 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	cd(t_token *tkn, t_minishell *msdata)
 	DIR		*fd;
 	char	*path;
 	char	*new_dir;
+	int		excode;
 
 	if (tkn->words->next == NULL)
 		if (!find_env(msdata->env, "HOME"))
@@ -119,12 +120,12 @@ int	cd(t_token *tkn, t_minishell *msdata)
 		new_dir = relative_dir(memchk(ft_split(path, '/')), msdata->pwd);
 	fd = opendir(new_dir);
 	if (fd == NULL)
-		return (error_system(2, path));
+		excode = error_system(2, path);
 	else
 	{
 		update_pwd(new_dir, msdata);
-		closedir(fd);
+		excode = closedir(fd);
 	}
 	free(new_dir);
-	return (0);
+	return (excode);
 }

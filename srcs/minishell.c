@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 18:43:34 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 21:21:45 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,6 @@ static void	mshell_loop(t_minishell *msdata)
 		if (!valid)
 		{
 			msdata->commands = tokenifier(rl, msdata, &valid);
-			tknprint(msdata->commands);
 			if (!valid)
 				execute(msdata->commands, msdata);
 		}

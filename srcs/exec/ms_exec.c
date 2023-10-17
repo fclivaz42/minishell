@@ -6,23 +6,24 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 17:58:17 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 19:03:09 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 21:21:35 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-static void	pipemoment(t_token *tkn)
+static void	pipemoment(t_minishell *msdata)
 {
-	if (tkn->fd_in != STDIN_FILENO)
+	t_token	*tkn;
+
+	tkn = msdata->commands;
+	while (tkn != NULL)
 	{
-		dup2(tkn->fd_in, STDIN_FILENO);
-		close(tkn->fd_in);
-	}
-	if (tkn->fd_out != STDOUT_FILENO)
-	{
-		dup2(tkn->fd_out, STDOUT_FILENO);
-		close(tkn->fd_out);
+		if (tkn->fd_out != STDOUT_FILENO)
+			close(tkn->fd_out);
+		if (tkn->fd_in != STDIN_FILENO)
+			close(tkn->fd_in);
+		tkn = tkn->next;
 	}
 }
 
@@ -30,14 +31,17 @@ static void	external(t_token *tkn, t_minishell *msdata)
 {
 	char	**commands;
 	char	**env;
-	int		ecode;
 
 	tkn->pid = fork();
 	if (tkn->pid < 0)
 		memchk(NULL);
 	if (tkn->pid == 0)
 	{
-		pipemoment(tkn);
+		if (tkn->fd_out != STDOUT_FILENO)
+			dup2(tkn->fd_out, STDOUT_FILENO);
+		if (tkn->fd_in != STDIN_FILENO)
+			dup2(tkn->fd_in, STDIN_FILENO);
+		pipemoment(msdata);
 		tkn->words->content = make_pathed(tkn->words->content, msdata->env);
 		commands = token_to_array(tkn->words);
 		env = env_to_array(msdata->env);
@@ -54,7 +58,6 @@ static void	forked_exec(t_token *tkn, t_minishell *msdata)
 	char	*cmd;
 
 	cmd = tkn->words->content;
-	tkn->pid = 0;
 	if (!(ft_strncmp("echo", cmd, ft_strlen(cmd) + 1)))
 		msdata->ecode = echo(tkn);
 	else if (!(ft_strncmp("cd", cmd, ft_strlen(cmd) + 1)))
@@ -88,21 +91,17 @@ void	execute(t_token *tkn, t_minishell *msdata)
 	while (etkn != NULL)
 	{
 		cmd = etkn->words->content;
-		printf("Executing command %s\n", cmd);
 		forked_exec(etkn, msdata);
-		if (tkn->fd_in != STDIN_FILENO)
-			close(tkn->fd_in);
-		if (tkn->fd_out != STDOUT_FILENO)
-			close(tkn->fd_out);
 		etkn = etkn->next;
 	}
 	etkn = tkn;
 	while (etkn != NULL)
 	{
 		if (etkn->pid > 0)
-			waitpid(etkn->pid, &msdata->ecode, 0);
+			pipemoment(msdata);
 		etkn = etkn->next;
 	}
+	waitstatus(tkn, msdata);
 }
 
 int	chredir(t_token *tkn, int mode)

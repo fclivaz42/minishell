@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 22:55:57 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/16 21:27:45 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 21:23:22 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,10 @@ int	open_file(t_minishell *msdata, char *path, int crtr, int *v)
 	else
 		fd = open(path, O_RDONLY);
 	if (fd < 0)
+	{
 		msdata->ecode = error_system(errno, path);
+		*v = 1;
+	}
 	return (fd);
 }
 
@@ -81,10 +84,8 @@ int	rsigncheck(char *str)
 t_token	*pipework(t_minishell *msdata, t_token *tkn, int *valid)
 {
 	t_token	*tkntest;
-	char	*test;
 
 	tkntest = tkn;
-	tknprint(tkntest);
 	while (tkntest != NULL)
 	{
 		tkntest = rcmp(msdata, tkntest, valid);
@@ -93,8 +94,5 @@ t_token	*pipework(t_minishell *msdata, t_token *tkn, int *valid)
 	}
 	if (msdata->commands != NULL)
 		tkn = msdata->commands;
-	ft_putendl_fd("", 1);
-	ft_putendl_fd("--------", 1);
-	ft_putendl_fd("", 1);
 	return (tkn);
 }

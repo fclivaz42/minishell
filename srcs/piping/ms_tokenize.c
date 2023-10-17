@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 20:15:40 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/14 18:19:33 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 19:11:50 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ static t_token	*mktoken(t_list *lst)
 	tkn->fd_in = STDIN_FILENO;
 	tkn->fd_out = STDOUT_FILENO;
 	tkn->words = lst;
+	tkn->pid = 0;
 	return (tkn);
 }
 
