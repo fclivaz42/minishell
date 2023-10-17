@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/16 21:28:51 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 18:42:24 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct s_token
 {
 	int				fd_in;
 	int				fd_out;
+	pid_t			pid;
 	t_list			*words;
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -41,7 +42,6 @@ typedef struct s_token
 typedef struct s_minishell
 {
 	int		ecode;
-	pid_t	pid;
 	char	*pwd;
 	t_list	*env;
 	t_token	*commands;
@@ -76,7 +76,7 @@ t_token	*pipework(t_minishell *msdata, t_token *tkn, int *valid);
 
 // --- EXECUTION --- //
 
-int		execute(t_token *tkn, t_minishell *msdata);
+void	execute(t_token *tkn, t_minishell *msdata);
 char	**token_to_array(t_list *list);
 char	*make_pathed(char *str, t_list *env);
 

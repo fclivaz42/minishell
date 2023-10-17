@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/30 20:31:44 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/14 22:13:21 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/17 18:58:56 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	free_token(t_token *tkn)
 		env = del->next;
 		free(del);
 	}
-	if (tkn->fd_in != STDIN_FILENO)
-		close(tkn->fd_in);
-	if (tkn->fd_out != STDOUT_FILENO)
-		close(tkn->fd_out);
+//	if (tkn->fd_in != STDIN_FILENO)
+//		close(tkn->fd_in);
+//	if (tkn->fd_out != STDOUT_FILENO)
+//		close(tkn->fd_out);
 	free(tkn);
 }
 
@@ -79,6 +79,7 @@ void	freexit(t_minishell *msdata)
 	zerofree(msdata->pwd);
 	clear_tokens(msdata->commands);
 	ecode = msdata->ecode;
+	printf("%d\n", ecode);
 	free(msdata);
 	exit(ecode);
 }
