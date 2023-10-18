@@ -6,12 +6,12 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:44:42 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 21:21:45 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/18 21:37:45 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
+/*
 void	tknprint(t_token *tkn)
 {
 	int		x;
@@ -21,12 +21,14 @@ void	tknprint(t_token *tkn)
 	while (tkn != NULL)
 	{
 		printf("DATA FOR TOKEN %d WITH ADDR %p:\n", x, tkn);
+		printf("PID_T: %d\n", tkn->pid);
 		printf("FD IN: %d\n", tkn->fd_in);
 		printf("FD OUT: %d\n", tkn->fd_out);
 		printf("WORDS: \n");
 		print = tkn->words;
 		while (print != NULL)
 		{
+			tknprint(msdata->commands);
 			ft_printf("%s%s ", CBBL, print->content);
 			print = print->next;
 		}
@@ -38,12 +40,29 @@ void	tknprint(t_token *tkn)
 		++x;
 	}
 }
+*/
+static void	signalis(void)
+{
+	struct sigaction	sigquit;
+	struct sigaction	sigint;
+
+	sigint.sa_handler = &interrupt;
+	sigemptyset(&sigint.sa_mask);
+	sigint.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sigint, NULL);
+	sigquit.sa_handler = SIG_IGN;
+	sigemptyset(&sigquit.sa_mask);
+	sigquit.sa_flags = SA_RESTART;
+	sigaction(SIGQUIT, &sigquit, NULL);
+}
 
 static int	validator(char *rl, t_minishell *msdata)
 {
 	char	c;
 	char	*str;
 
+	if (rl == NULL)
+		freexit(msdata);
 	if (ft_strlen(rl) == 0)
 		return (1);
 	str = rl;
@@ -80,6 +99,7 @@ static void	reset(t_minishell *msdata, char *rl, char *prompt, int valid)
 	if (!valid)
 		clear_tokens(msdata->commands);
 	msdata->commands = NULL;
+	msdata->forked = 0;
 }
 
 static void	mshell_loop(t_minishell *msdata)
@@ -88,16 +108,19 @@ static void	mshell_loop(t_minishell *msdata)
 	char	*rl;
 	int		valid;
 
+	valid = 1;
 	while (1)
 	{
 		prompt = readline_proompter(msdata->ecode, \
 			msdata->env, msdata->pwd);
-		rl = memchk(readline(prompt));
+		signalis();
+		rl = readline(prompt);
 		valid = validator(rl, msdata);
 		if (ft_strlen(rl) > 0)
 			add_history(rl);
 		if (!valid)
 		{
+			sigtochild();
 			msdata->commands = tokenifier(rl, msdata, &valid);
 			if (!valid)
 				execute(msdata->commands, msdata);
@@ -108,7 +131,7 @@ static void	mshell_loop(t_minishell *msdata)
 
 int	main(int ac, char *av[], char *env[])
 {
-	t_minishell	*msdata;	
+	t_minishell	*msdata;
 
 	(void)ac;
 	msdata = memchk(ft_calloc(1, sizeof(t_minishell)));

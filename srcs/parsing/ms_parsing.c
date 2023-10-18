@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/24 16:40:27 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/09 20:14:55 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/18 21:30:11 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static char	*interpret(char *str, size_t *delta, t_list *env)
 		if (*str == 34 || *str == 39)
 			str = str + copy_quotes(&ntrp[x], str, env, *str);
 		else if (*str == '$')
-			str = str + copy_var(&ntrp[x], str, env);
+			str = str + copy_var(&ntrp[x], str, env) + 1;
 		else
 		{
 			ntrp[x] = str[0];
@@ -88,6 +88,7 @@ t_list	*interparse(char *rl, t_list *env)
 
 	x = 0;
 	d = 0;
+	list = NULL;
 	while (d < ft_strlen(rl))
 	{
 		while (rl[d] != 0 && ft_strchr(" \t\n", rl[d]))

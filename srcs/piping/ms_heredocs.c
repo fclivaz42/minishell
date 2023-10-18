@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 22:55:57 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 21:23:22 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/18 19:45:04 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ char	*here_doc(char *eof)
 	while (1)
 	{
 		rl = readline("∙ ");
+		if (rl == NULL)
+			return (strfull);
 		if (!ft_strncmp(rl, eof, ft_strlen(eof) + 1))
 		{
 			zerofree(rl);
@@ -61,6 +63,7 @@ int	open_file(t_minishell *msdata, char *path, int crtr, int *v)
 	{
 		msdata->ecode = error_system(errno, path);
 		*v = 1;
+		clear_tokens(msdata->commands);
 	}
 	return (fd);
 }

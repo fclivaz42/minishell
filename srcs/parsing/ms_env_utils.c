@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 19:58:14 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 01:01:57 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/19 00:02:33 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,8 @@ void	delete_env(t_minishell *msdata, char *str)
 	x = 0;
 	delete = msdata->env;
 	prev = msdata->env;
+	if (!delete)
+		return ;
 	test = (char **)delete->content;
 	while (ft_strncmp(str, test[0], ft_strlen(test[0]) + 1))
 	{

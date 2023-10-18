@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 21:13:46 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/18 17:51:05 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,9 @@
 # include <unistd.h>
 # include <dirent.h>
 # include <signal.h>
-# include <readline/history.h>
+# include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <sys/wait.h>
 # include "libft/libft.h"
 
 // --- STRUCTS --- //
@@ -95,6 +94,12 @@ char	*readline_proompter(int ecode, t_list *env, char *pwd);
 void	waitstatus(t_token *tkn, t_minishell *msdata);
 void	quicc_copy(char *dest, char *src);
 
+// --- SIGNAL UTILS --- //
+
+void	sigtochild(void);
+void	interrupt(int k);
+void	sigskip(int k);
+
 // --- BUILT-IN COMMANDS --- //
 
 int		echo(t_token *tkn);
@@ -106,7 +111,8 @@ int		unset(t_token *tkn, t_minishell *msdata);
 // --- BUNGIE SPECIFIC --- //
 
 void	*memchk(void *str);
-void	*error_bad_piping(char *str, int *v, int mode);
+void	*error_bad_piping(t_token *tkn, int *v, int mode);
+void	rl_replace_line(const char *src, int c);
 int		error_bad_format(char *src, t_minishell *msdata);
 int		error_unsupported_character(char c, t_minishell *msdata);
 int		error_system(int mode, char *file);

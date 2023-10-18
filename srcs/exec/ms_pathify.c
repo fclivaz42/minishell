@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:10:12 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/30 23:42:28 by fclivaz          ###   LAUSANNE.CH       */
+/*   Updated: 2023/10/18 19:50:03 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static char	*find_real_cmd(char *cmd, int cmdlen, char **p)
 	char	*fcmd;
 
 	x = -1;
+	if (p == NULL)
+		return (NULL);
 	while (p[++x] != NULL)
 	{
 		fcmd = (char *)memchk(ft_calloc(cmdlen + \

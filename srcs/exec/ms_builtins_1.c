@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 18:15:33 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 20:29:57 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/18 23:02:29 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ int	echo(t_token *tkn)
 	if (tkn->words->next == NULL)
 		return (!write(tkn->fd_out, "\n", 1));
 	print = tkn->words->next;
-	if (!ft_strncmp(print->content, "-n", 2))
+	while (!ft_strncmp(print->content, "-n", 2))
+	{
 		print = print->next;
+		if (print == NULL)
+			break ;
+	}
 	while (print != NULL)
 	{
 		ft_putstr_fd(print->content, tkn->fd_out);

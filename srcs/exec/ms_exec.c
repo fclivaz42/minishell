@@ -6,7 +6,7 @@
 /*   By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/16 17:58:17 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/17 21:21:35 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/18 20:18:25 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,13 @@ static void	external(t_token *tkn, t_minishell *msdata)
 	char	**commands;
 	char	**env;
 
+	msdata->forked = 1;
 	tkn->pid = fork();
 	if (tkn->pid < 0)
 		memchk(NULL);
 	if (tkn->pid == 0)
 	{
+		sigtochild();
 		if (tkn->fd_out != STDOUT_FILENO)
 			dup2(tkn->fd_out, STDOUT_FILENO);
 		if (tkn->fd_in != STDIN_FILENO)
@@ -46,10 +48,8 @@ static void	external(t_token *tkn, t_minishell *msdata)
 		commands = token_to_array(tkn->words);
 		env = env_to_array(msdata->env);
 		if (execve(commands[0], commands, env) == -1)
-		{
 			msdata->ecode = error_system(-1, tkn->words->content);
-			freexit(msdata);
-		}
+		freexit(msdata);
 	}
 }
 
@@ -85,20 +85,18 @@ static void	forked_exec(t_token *tkn, t_minishell *msdata)
 void	execute(t_token *tkn, t_minishell *msdata)
 {
 	t_token	*etkn;
-	char	*cmd;
 
 	etkn = tkn;
 	while (etkn != NULL)
 	{
-		cmd = etkn->words->content;
-		forked_exec(etkn, msdata);
+		if (etkn->words != NULL)
+			forked_exec(etkn, msdata);
 		etkn = etkn->next;
 	}
 	etkn = tkn;
 	while (etkn != NULL)
 	{
-		if (etkn->pid > 0)
-			pipemoment(msdata);
+		pipemoment(msdata);
 		etkn = etkn->next;
 	}
 	waitstatus(tkn, msdata);

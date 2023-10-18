@@ -24,15 +24,17 @@ OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})
 
 NAME	= minishell
 
-CFLAGS	= -Wall -Werror -Wextra -O2
+CFLAGS	= -Wall -Werror -Wextra
 
-LFLAGS = -Llibft -lft -lreadline
+LFLAGS = -lreadline -lft -Llibft -L/Users/fclivaz/.brew/opt/readline/lib -I/Users/fclviaz/.brew/opt/readline/include/readline
 
 CC = cc
 
-${NAME}:	${OBJ}
+${NAME}:	${OBJ} libft/libft.a
+			${CC} ${OBJ} -o ${NAME} libft/libft.a ${LFLAGS}
+
+libft/libft.a:
 			make -C libft all
-			${CC} ${OBJ} -o ${NAME} ${LFLAGS}
 
 ${OBJDIR}/%.o:	${SUBDIR}/%.c | ${OBJDIR}
 				${CC} ${CFLAGS} -c $< -o $@
