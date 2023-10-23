@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/21 18:27:13 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/10/18 17:51:05 by fclivaz          ###    LAUSANNE.CH      */
+/*   Updated: 2023/10/23 11:38:53 by fclivaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_token
 typedef struct s_minishell
 {
 	int		ecode;
+	int		forked;
 	char	*pwd;
 	t_list	*env;
 	t_token	*commands;
