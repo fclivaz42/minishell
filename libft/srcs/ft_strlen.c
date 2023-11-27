@@ -6,7 +6,7 @@
 /*   By: fclivaz <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 18:03:04 by fclivaz           #+#    #+#             */
-/*   Updated: 2023/09/07 18:31:17 by fclivaz          ###   ########.fr       */
+/*   Updated: 2023/09/07 20:28:32 by fclivaz          ###    LAUSANNE.CH      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	int		x;
 
 	x = 0;
-	if (s == NULL)
+	if (!s)
 		return (0);
 	while (s[x] != 0)
 		++x;

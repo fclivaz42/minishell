@@ -5,6 +5,7 @@ OBJDIR	= objs
 SRCS	=	${SUBDIR}/ft_atoi.c\
 			${SUBDIR}/ft_bzero.c\
 			${SUBDIR}/ft_calloc.c\
+			${SUBDIR}/ft_gnl.c\
 			${SUBDIR}/ft_isalnum.c\
 			${SUBDIR}/ft_isalpha.c\
 			${SUBDIR}/ft_isascii.c\
@@ -26,8 +27,6 @@ SRCS	=	${SUBDIR}/ft_atoi.c\
 			${SUBDIR}/ft_memmove.c\
 			${SUBDIR}/ft_memset.c\
 			${SUBDIR}/ft_printf.c\
-			${SUBDIR}/ft_printf_toolbox.c\
-			${SUBDIR}/ft_printf_toolhex.c\
 			${SUBDIR}/ft_putchar_fd.c\
 			${SUBDIR}/ft_putendl_fd.c\
 			${SUBDIR}/ft_putnbr_fd.c\
@@ -48,8 +47,6 @@ SRCS	=	${SUBDIR}/ft_atoi.c\
 			${SUBDIR}/ft_substr.c\
 			${SUBDIR}/ft_tolower.c\
 			${SUBDIR}/ft_toupper.c\
-			${SUBDIR}/get_next_line.c\
-			${SUBDIR}/get_next_line_utils.c\
 
 OBJ		= $(patsubst ${SUBDIR}/%.c, ${OBJDIR}/%.o, ${SRCS})
 
